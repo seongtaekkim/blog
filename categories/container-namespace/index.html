@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>Category: container/namespace - Blog</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="Blog"><meta property="og:url" content="https://seongtaekkim.github.io/blog"><meta property="og:site_name" content="Blog"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://seongtaekkim.github.io/blog/img/og_image.png"><meta property="article:author" content="Seongtaek Kim"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://seongtaekkim.github.io/blog/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://seongtaekkim.github.io/blog"},"headline":"Blog","image":["https://seongtaekkim.github.io/blog/img/og_image.png"],"author":{"@type":"Person","name":"Seongtaek Kim"},"publisher":{"@type":"Organization","name":"Blog","logo":{"@type":"ImageObject"}},"description":""}</script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/blog/categories">Categories</a></li><li class="is-active"><a href="#" aria-current="page">container/namespace</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:50:35.000Z" title="2024. 8. 31. 오후 7:50:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">9 minutes read (About 1362 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/mount-namespace/">mount namespace</a></h1><div class="content"><h2 id="네임스페이스-namespace"><a href="#네임스페이스-namespace" class="headerlink" title="네임스페이스(namespace)"></a>네임스페이스(namespace)</h2><ul>
+<li>하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 <strong>격리된 환경을 제공</strong>하는 *<em>경량 프로세스 가상화 기술</em></li>
+<li>경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미</li>
+</ul>
+<h3 id="LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그"><a href="#LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그" class="headerlink" title="LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그"></a>LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그</h3><ul>
+<li><p>마운트 네임스페이스 : CLONE_NEWNS</p>
+</li>
+<li><p>UTS 네임스페이스 : CLONE_NEWUTS</p>
+</li>
+<li><p>IPC 네임스페이스 : CLONE_NEWIPC</p>
+</li>
+<li><p>PID 네임스페이스 : CLONE_NEWPID</p>
+</li>
+<li><p>사용자 네임스페이스 : CLONE_NEWUSER</p>
+</li>
+<li><p>네트워크 네임스페이스 : CLONE_NEWNET</p>
+</li>
+<li><p>상수플래그 정의 (&#x2F;usr&#x2F;include&#x2F;linux&#x2F;sched.h)</p>
+</li>
+</ul>
+<p><img src="/blog/img/layer-12.png"></p>
+<h3 id="마운트-mount-네임스페이스란"><a href="#마운트-mount-네임스페이스란" class="headerlink" title="마운트(mount) 네임스페이스란?"></a>마운트(mount) 네임스페이스란?</h3><ul>
+<li>프로세스와 그 자식 프로세스가 각기 다른 파일시스템 마운트 지점을 제공</li>
+<li>기본적으로 모든 프로세스는 동일한 기본 네임스페이스를 공유하기 때문에, 파일 시스템을 마운트하거나 마운트를 해제하는 등의 변경을 모든 프로세스가 인지할 수 있음</li>
+<li>만약 clone() 시스템 콜을 통해 프로세스를 생성할 때 CLONE_NEWNS 플래그가 전달되면, 새로 생성되는 프로세스는 호출한 프로세스가 갖고있는 마운트 트리의 사본을 가져옴</li>
+<li>이 사본은 부모 프로세스에 영향을 미치지 않고 새로 생성된 프로세스가 파일시스템을 마운트 or 언마운트 등의 변경을 할 수 있도록 함</li>
+<li>이 시점부터 기본 네임스페이스의 모든 파일시스템 마운트 및 언마운트는 새로운 네임스페이스에서 볼 수 있지만, 각각의 프로세스 별 마운트 네임스페이스 내부에서의 변경을 해당 프로세스의 네임스페이스 밖에서는 알 수 없음</li>
+</ul>
+<p>마운트 네임스페이스는 “mount point”를 격리 한다.<br>여기서 mount란 루트파일시스템에 서브파일시스템을 부착하는 시스템콜이고, mount point는 파일시스템이 부착(mount) 될 위치(디렉터리)다.</p>
+<p>mount 하면 원래 디렉터리가 포함하고 있던 파일, 하위 디렉터리 등이 보이지 않고, 새로 부착된 파일시스템의 파일들이 보이게 됩니다. 예를 들어 USB 드라이브를 지정한 mount point로 부착을 시키면, 해당 위치에는 부착된 USB의 파일들이 보이게 됩니다. </p>
+<p>마운트 네임스페이스가 mount point를 격리한다는 것은 파일시스템 마운트와 해제 등의 변경사항들이 네임스페이스 밖에서는 보이지 않고, 외부에 전혀 영향을 주지 않음을 의미합니다. 마운트 네임스페이스가 생김으로써 컨테이너를 위해 pivot_root를 안전하게 실행할 수 있게 되었습니다.</p>
+<h3 id="unshare-mount-namespace"><a href="#unshare-mount-namespace" class="headerlink" title="unshare mount namespace"></a>unshare mount namespace</h3><h3 id="mount-플래그를-unshared-시스템-콜에-전달"><a href="#mount-플래그를-unshared-시스템-콜에-전달" class="headerlink" title="mount 플래그를 unshared 시스템 콜에 전달"></a>mount 플래그를 unshared 시스템 콜에 전달</h3><ul>
+<li>부모 프로세스의 mounts를 복제</li>
+<li>현재 bash 프로세스를 자체 마운트 네임스페이스로 이동</li>
+<li>“-m”옵션 -&gt; 마운트 네임스페이스</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unshare -m</span><br><span class="line">root@seongtki:/tmp<span class="comment"># mkdir tmp1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>root filesystem이 같기 때문에 양쪽다 폴더가 보임</p>
+</li>
+<li><p>mount는 namespace 내부에서만 적용되어 보인다.</p>
+</li>
+<li><p>tmp1 : mount point</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount -o size=1m -t tmpfs tmpfs tmp1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">tmpfs on /tmp/tmp1 <span class="built_in">type</span> tmpfs (rw,relatime,size=1024k)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># readlink 심폴릭링크를 통해 namepsace id를 가져올 수 있다.</span></span><br><span class="line"><span class="comment"># /proc/$$ 는 현재 bash 쉘의 프로세스 ID(PID)</span></span><br><span class="line">$ <span class="built_in">readlink</span> /proc/$$/ns/mnt</span><br><span class="line">mnt:[4026532211]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<ul>
+<li>host</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">root@seongtki:/tmp<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mount namespace는 per-process mount isolation을 제공 (프로세스에 격리된 파일시스템 마운트 제공)</li>
+</ul>
+<h3 id="per-process-mount-isolation"><a href="#per-process-mount-isolation" class="headerlink" title="per-process mount isolation"></a>per-process mount isolation</h3><ul>
+<li>new-root 에 nginx를 설치한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">export</span> $(docker create nginx:latest) | tar -C new-root -xvf -</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1 directory, 0 files</span><br><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># tree -L 1 new-root</span></span><br><span class="line">new-root</span><br><span class="line">├── bin -&gt; usr/bin</span><br><span class="line">├── boot</span><br><span class="line">├── dev</span><br><span class="line">├── docker-entrypoint.d</span><br><span class="line">├── docker-entrypoint.sh</span><br><span class="line">├── etc</span><br><span class="line">├── hello</span><br><span class="line">├── home</span><br><span class="line">├── lib -&gt; usr/lib</span><br><span class="line">├── media</span><br><span class="line">├── mnt</span><br><span class="line">├── opt</span><br><span class="line">├── proc</span><br><span class="line">├── root</span><br><span class="line">├── run</span><br><span class="line">├── sbin -&gt; usr/sbin</span><br><span class="line">├── srv</span><br><span class="line">├── sys</span><br><span class="line">├── tmp</span><br><span class="line">├── usr</span><br><span class="line">├── var</span><br><span class="line">└── world</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mount</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># mount -t tmpfs none new-root</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># df -h | grep new</span></span><br><span class="line">none                               2.0G     0  2.0G   0% /tmp/tmp1/new-root</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="pivot-root-적용"><a href="#pivot-root-적용" class="headerlink" title="pivot_root 적용"></a>pivot_root 적용</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/<span class="comment"># mkdir old-root</span></span><br><span class="line">/<span class="comment"># pivot_root . old-root # 현재디렉토리를 루트파일시스템으로 하고, old-root 폴더에 기존 루트디렉토리를 마운트시킨다.</span></span><br><span class="line"></span><br><span class="line">/<span class="comment"># nginx -g &quot;daemon off;&quot; # nginx 실행</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>host에서 nginx pid를 이용해서 namespace id를 가져와 해당 파일시스템을 조회해본다.</li>
+<li>lsns: 현존하는 namespace를 확인하기 위해 사용하는 명령어</li>
+</ul>
+<p><img src="/blog/img/layer-13.png"></p>
+<ul>
+<li>자체적인 루트파일시스템이 보장되므로 서버 환경 (시스템 파일, 의존성 라이브러리 충돌, 경로 설정 등) 으로 부터 자유롭다.</li>
+<li>서버의 파일시스템으로 부터 완전하게 분리됨으로써 보안상 안전함</li>
+<li>컨테이너 내에서 자유롭게 마운트 변경이 가능하고 파일시스템을 확장할 수 있다.</li>
+</ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:46:35.000Z" title="2024. 8. 31. 오후 7:46:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.968Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">4 minutes read (About 666 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/namespace/">network namespace</a></h1><div class="content"><ul>
+<li>network namespace 개념에 대해 알아보고</li>
+<li>namespace와 veth를 생성해서 1:1 통신 및 가상장치에 대한 테스트를 해보자</li>
+</ul>
+<h2 id="이더넷"><a href="#이더넷" class="headerlink" title="이더넷"></a>이더넷</h2><ul>
+<li><p>컴퓨터 네트워킹의 한 방식이다,.</p>
+</li>
+<li><p>Layer 1(물리계층) - 신호&#x2F;배선 담당</p>
+</li>
+<li><p>Layer 2(데이터링크) - MAC 프로토콜 담당</p>
+</li>
+</ul>
+<h2 id="MAC-address"><a href="#MAC-address" class="headerlink" title="MAC address"></a>MAC address</h2><ul>
+<li>Media Access Control adress</li>
+<li>Physical Address</li>
+<li>16진수 옥텟 6개로 구분되어 있음</li>
+</ul>
+<p><img src="/blog/img/namespace-01.png"></p>
+<h2 id="ARP-Address-Resolution-Protocol"><a href="#ARP-Address-Resolution-Protocol" class="headerlink" title="ARP (Address Resolution Protocol)"></a>ARP (Address Resolution Protocol)</h2><ul>
+<li>ARP 프로토콜은 같은 같은 네트워크 대역에서 통신을 하기 위해 필요한 MAC주소를 IP주소를 이용해서 알아오는 프로토콜이다.</li>
+<li>같은 네트워크 대역에서 통신을 한다고 하더라도 데이터를 보내기 위해서는 7계층부터 캡슐화를 통해 데이터를 보내기 때문에 IP주소와 MAC주소가 모두 필요하다.</li>
+<li>이 때 IP주소는 알고 MAC주소는 모르더라도 ARP를 통해 통신이 가능하다.</li>
+<li>브로드 캐스트 (FF:FF:FF:FF:FF:FF)</li>
+<li>라우터는 자신의 MAC을 알려준다.</li>
+</ul>
+<p><img src="/blog/img/namespace-02.png"></p>
+<h2 id="Network-namespace"><a href="#Network-namespace" class="headerlink" title="Network namespace"></a>Network namespace</h2><ul>
+<li><p>호스트  안에 가상 네트워크를 생성할 수 있다.</p>
+</li>
+<li><p>네트워크를 isolation 하고 네트워크 stack (OSL 7Layer)을 가상화한다.</p>
+<ul>
+<li>Isolates network and virtualize network stack</li>
+</ul>
+</li>
+<li><p>ip주소, 라우트 테이블, 소켓, 방화벽 등이 별도 가상화 네트워크에 준비된다.</p>
+</li>
+</ul>
+<p><img src="/blog/img/namespace-03.png"></p>
+<h3 id="Network-interface-랜카드-라고-생각하면-편하다"><a href="#Network-interface-랜카드-라고-생각하면-편하다" class="headerlink" title="Network interface (랜카드 라고 생각하면 편하다)"></a>Network interface (랜카드 라고 생각하면 편하다)</h3><ul>
+<li>가상의 디바이스를 생성하고 마치 랜카드 끼우는 것 처럼 옮겨다니며 장착할 수 있다.<ul>
+<li>Network interface is present in exactly 1 namespace</li>
+<li>Network interface can ve moved between namespaces</li>
+</ul>
+</li>
+</ul>
+<h3 id="Delete-Network-interface"><a href="#Delete-Network-interface" class="headerlink" title="Delete Network interface"></a>Delete Network interface</h3><ul>
+<li>네트워크 네임스페이스를 삭제하면 포함된 모든 가상장치가 삭제된다.</li>
+</ul>
+<h2 id="namespace-1-1-통신"><a href="#namespace-1-1-통신" class="headerlink" title="namespace 1:1 통신"></a>namespace 1:1 통신</h2><h4 id="veth-virtual-etcernet-두-개가-서로-통신을-할-수-있다"><a href="#veth-virtual-etcernet-두-개가-서로-통신을-할-수-있다" class="headerlink" title="veth(virtual etcernet) 두 개가 서로 통신을 할 수 있다."></a>veth(virtual etcernet) 두 개가 서로 통신을 할 수 있다.</h4><ul>
+<li>랜카드 두 개를 랜선으로 연결 했다고 생각하면 된다.</li>
+</ul>
+<h3 id="통신-준비작업"><a href="#통신-준비작업" class="headerlink" title="통신 준비작업"></a>통신 준비작업</h3><ul>
+<li>네트워크 네임스페이스 2개 생성 (red, blue)</li>
+<li>veth 두개를 pair 로 생성해준다</li>
+<li>네임스페이스에 각각의 veth를 링크해준다.</li>
+<li>링크 후 veth의 전원을 켜준다.</li>
+<li>해당 네임스페이스의 veth에 ip를 할당해준다.<ul>
+<li>dev: “name” # 주소를 정할 장치 명</li>
+</ul>
+</li>
+<li><a href="./namespace-test.md">테스트 내용</a></li>
+</ul>
+<p><img src="/blog/img/namespace-04.png"></p>
+<h2 id="리눅스-참고-프로그램"><a href="#리눅스-참고-프로그램" class="headerlink" title="리눅스 참고 프로그램"></a>리눅스 참고 프로그램</h2><h3 id="nsenter"><a href="#nsenter" class="headerlink" title="nsenter"></a>nsenter</h3><ul>
+<li><p>네임스페이스에 attach하여 지정한 프로그램을 실행한다.</p>
+</li>
+<li><p>COMMAND: 지정하지 않으면 $shell 실행</p>
+</li>
+<li><p>Option: –net: “net namespace”</p>
+</li>
+<li><p>man nsenter</p>
+</li>
+<li><pre><code>$ nsenter --net=/var/run/netns/red
+</code></pre>
+</li>
+</ul>
+<h3 id="ip-addr-show-ip-addr"><a href="#ip-addr-show-ip-addr" class="headerlink" title="ip addr show (ip addr)"></a>ip addr show (ip addr)</h3><ul>
+<li>네트워크 장치를 확인</li>
+</ul>
+<h3 id="ip-neigh-show-default-show"><a href="#ip-neigh-show-default-show" class="headerlink" title="ip neigh show(default show)"></a>ip neigh show(default show)</h3><ul>
+<li>arp tables management</li>
+<li>Man ip-neighbour</li>
+</ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:43:35.000Z" title="2024. 8. 31. 오후 7:43:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.968Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">4 minutes read (About 634 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/namespace-test/">network namespace test</a></h1><div class="content"><ul>
+<li>namespace, veth 등을 생성해서 1:1 통신을 해보자.</li>
+</ul>
+<h2 id="테스트"><a href="#테스트" class="headerlink" title="테스트"></a>테스트</h2><h3 id="namespace-virture-ethernet-ip-설정"><a href="#namespace-virture-ethernet-ip-설정" class="headerlink" title="namespace, virture ethernet, ip 설정"></a>namespace, virture ethernet, ip 설정</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">$ ip link</span><br><span class="line">$ ip netns</span><br><span class="line">$ ip netns add red</span><br><span class="line">$ ip netns add blue</span><br><span class="line">$ ip link add veth-red type veth peer name veth-blue</span><br><span class="line">$ ip link set veth-red netns red</span><br><span class="line">$ ip link set veth-blue netns blue</span><br><span class="line">$ ip netns exec red ip link set veth-red up</span><br><span class="line">$ ip netns exec blue ip link set veth-blue up</span><br><span class="line">$ ip netns exec red ip addr add 1.1.1.1/24 dev veth-red</span><br><span class="line">$ ip netns exec blue ip addr add 1.1.1.2/24 dev veth-blue</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="Blue-namesace"><a href="#Blue-namesace" class="headerlink" title="Blue namesace"></a>Blue namesace</h3><ul>
+<li>tcpdump 실행</li>
+<li>red ns 에서 ping 요청을 하면, arp table에 등록 후, 해당 mac 으로 응답을 보내고</li>
+<li>이 후 icmp 요청에 대한 응답을 처리한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$ nsenter --net=/var/run/netns/blue</span><br><span class="line">$ tcpdump -li veth-blue</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on veth-blue, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">07:12:35.267019 ARP, Request who-has 1.1.1.2 tell 1.1.1.1, length 28</span><br><span class="line">07:12:35.267034 ARP, Reply 1.1.1.2 is-at 4e:87:56:0c:9e:d0 (oui Unknown), length 28</span><br><span class="line">07:12:35.267037 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1758, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">07:12:35.267045 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 1758, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">07:12:36.268644 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1758, <span class="built_in">seq</span> 2, length 64</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>arp 정보 조회</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ip neigh show</span><br><span class="line">1.1.1.1 dev veth-blue lladdr f6:e9:d4:cf:26:3a STALE</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# arp</span><br><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">1.1.1.1                  ether   f6:e9:d4:cf:26:3a   C                     veth-blue</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>각종 정보 조회</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ ip address show</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">5: veth-blue@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    link/ether 4e:87:56:0c:9e:d0 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 1.1.1.2/24 scope global veth-blue</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::4c87:56ff:fe0c:9ed0/64 scope link</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">$ bridge fdb show</span><br><span class="line">33:33:00:00:00:01 dev veth-blue self permanent</span><br><span class="line">01:00:5e:00:00:01 dev veth-blue self permanent</span><br><span class="line">33:33:ff:0c:9e:d0 dev veth-blue self permanent</span><br><span class="line"></span><br><span class="line">$ ip route show</span><br><span class="line">1.1.1.0/24 dev veth-blue proto kernel scope link src 1.1.1.2</span><br><span class="line"></span><br><span class="line">$ iptables -S</span><br><span class="line">-P INPUT ACCEPT</span><br><span class="line">-P FORWARD ACCEPT</span><br><span class="line">-P OUTPUT ACCEPT</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="red-namesace"><a href="#red-namesace" class="headerlink" title="red namesace"></a>red namesace</h3><ul>
+<li>blue ns로 ping을 보낸다. </li>
+<li>처음엔 arp 정보가 없는데, arp 응답이 오게 되면 arp table 등록 후 icmp 통시을 하게 된다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ nsenter --net=/var/run/netns/red</span><br><span class="line"></span><br><span class="line">PING 1.1.1.2 (1.1.1.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=1 ttl=64 time=0.041 ms</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=2 ttl=64 time=0.045 ms</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=3 ttl=64 time=0.061 ms</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>arp 정보 조회</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ip neigh show</span><br><span class="line">1.1.1.2 dev veth-red lladdr 4e:87:56:0c:9e:d0 STAL</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ arp</span><br><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">1.1.1.2                  ether   4e:87:56:0c:9e:d0   C                     veth-red</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>각종 정보 조회</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">$ ip address show</span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">6: veth-red@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether f6:e9:d4:cf:26:3a brd ff:ff:ff:ff:ff:ff link-netnsid 1</span><br><span class="line">    inet 1.1.1.1/24 scope global veth-red</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::f4e9:d4ff:fecf:263a/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line"></span><br><span class="line">$ bridge fdb show</span><br><span class="line">33:33:00:00:00:01 dev veth-red self permanent</span><br><span class="line">01:00:5e:00:00:01 dev veth-red self permanent</span><br><span class="line">33:33:ff:cf:26:3a dev veth-red self permanent</span><br><span class="line"></span><br><span class="line">$ ip route show</span><br><span class="line">1.1.1.0/24 dev veth-red proto kernel scope <span class="built_in">link</span> src 1.1.1.1</span><br><span class="line"></span><br><span class="line">$ iptables -S</span><br><span class="line">-P INPUT ACCEPT</span><br><span class="line">-P FORWARD ACCEPT</span><br><span class="line">-P OUTPUT ACCEPT</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="삭제"><a href="#삭제" class="headerlink" title="삭제"></a>삭제</h3><ul>
+<li>테스트를 후 생성한 리소들을 삭제해준다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ip -n <span class="string">&quot;netns name&quot;</span> <span class="built_in">link</span> del <span class="string">&quot;veth-red&quot;</span></span><br><span class="line">$ ip netns del <span class="string">&quot;name&quot;</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/blog/categories/container-namespace/page/0/">Previous</a></div><div class="pagination-next"><a href="/blog/categories/container-namespace/page/2/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/blog/categories/container-namespace/">1</a></li><li><a class="pagination-link" href="/blog/categories/container-namespace/page/2/">2</a></li><li><a class="pagination-link" href="/blog/categories/container-namespace/page/3/">3</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:40:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/network-mode/">Calico Network Mode</a></p><p class="categories"><a href="/blog/categories/calico-networkmode/">calico/networkmode</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:20:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-communication/">Calico Communication</a></p><p class="categories"><a href="/blog/categories/calico-communication/">calico/communication</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:00:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-concept/">Calico Concept</a></p><p class="categories"><a href="/blog/categories/calico-concept/">calico/concept</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:32.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/kind/">kind</a></p><p class="categories"><a href="/blog/categories/k8s-kind/">k8s/kind</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:31.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/pause-container/">PAUSE 컨테이너</a></p><p class="categories"><a href="/blog/categories/k8s-PAUSE-Container/">k8s/PAUSE-Container</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

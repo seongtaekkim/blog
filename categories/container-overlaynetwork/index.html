@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta name="robots" content="noindex"><meta><title>Category: container/overlaynetwork - Blog</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta property="og:type" content="blog"><meta property="og:title" content="Blog"><meta property="og:url" content="https://seongtaekkim.github.io/blog"><meta property="og:site_name" content="Blog"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://seongtaekkim.github.io/blog/img/og_image.png"><meta property="article:author" content="Seongtaek Kim"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://seongtaekkim.github.io/blog/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://seongtaekkim.github.io/blog"},"headline":"Blog","image":["https://seongtaekkim.github.io/blog/img/og_image.png"],"author":{"@type":"Person","name":"Seongtaek Kim"},"publisher":{"@type":"Organization","name":"Blog","logo":{"@type":"ImageObject"}},"description":""}</script><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><div class="card-content"><nav class="breadcrumb" aria-label="breadcrumbs"><ul><li><a href="/blog/categories">Categories</a></li><li class="is-active"><a href="#" aria-current="page">container/overlaynetwork</a></li></ul></nav></div></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T15:02:30.000Z" title="2024. 9. 1. 오전 12:02:30">2024-09-01</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.969Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-overlaynetwork/">container/overlaynetwork</a></span><span class="level-item">3 minutes read (About 429 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/09/01/docs/overlaynetwork/vxlan/">vxlan</a></h1><div class="content"><ul>
+<li>VxLAN은 VLAN을 확장한 개념으로 기존의 VLAN에서 만들 수 있는 네트워크보다 훨씬 더 많은 네트워크를 생성할 수 있다.</li>
+<li>VxLAN에서 x는 eXtensible으로 이름에서도 확장을 나타내고 있다.</li>
+<li>VLAN은 이더넷 프레임에 16bit(vlan, option, id)를 추가로 구성하여 Tag를 기반으로 동작하는데 이때 id로 사용할 수 있는 비트가 12bit이기 때문에 만들 수 있는 네트워크가 최대 4096개만 생성할 수 있었다.</li>
+<li>VxLAN은 VLAN의 문제를 해결하기 위해 50byte 헤더(Mac over IP, UDP Header, 24bit VLAN ID)를 추가로 구성하여 16,000,000개 이상의 VLAN을 제공할 수 있다.</li>
+</ul>
+<h3 id="VNI-virtual-Network-Identifier"><a href="#VNI-virtual-Network-Identifier" class="headerlink" title="VNI (virtual Network Identifier)"></a>VNI (virtual Network Identifier)</h3><ul>
+<li>VLAN과 VxLAN segment간 mapping 구분자</li>
+<li>같은 VLAN에 대해 여러 개의 VNI mapping이 가능하다.</li>
+</ul>
+<h3 id="VTEP-VXLAN-Tunnel-End-Point"><a href="#VTEP-VXLAN-Tunnel-End-Point" class="headerlink" title="VTEP ( VXLAN Tunnel End Point )"></a>VTEP ( VXLAN Tunnel End Point )</h3><ul>
+<li>VXLAN Tunnel 종단 역할을 수행한다</li>
+<li>인캡슐레이션과 터미네이션 의 end point 역활을 수행한다.</li>
+</ul>
+<p><img src="/blog/img/overlay-network-03.png"></p>
+<ul>
+<li><p>Original L2 frame 이외의 모든 헤더가 VXLAN 관련 헤더이다.</p>
+</li>
+<li><p>VXLAN 헤더 에는 VNI 라는 24비트 VLAN 을 생성할 수 있다.</p>
+<p>일반적인 VLAN ID 가 16비트의 기반이라면, VXLAN의 VNI 에서 표현되는 VLAN 은 24비트의 기반으로, 16,000,000 개의 VLAN 을 생성 할 수 있다.</p>
+</li>
+<li><p>L2 over L3 : UDP 패킷 내부에 L2 프레임을  캡슐화 하는 <em>터널링</em>  기술</p>
+</li>
+<li><p>Mac in UDP </p>
+<ul>
+<li>VXLAN 패킷 사이즈 : 50byte</li>
+<li>VXLAN L2 정보 (MAC address)를 L3에 넣어서 통신</li>
+</ul>
+</li>
+</ul>
+<h3 id="MTU"><a href="#MTU" class="headerlink" title="MTU"></a>MTU</h3><ul>
+<li>원래는 1500byte 를 사용하는데 VXLAN 패킷에 50byte를 썼으므로</li>
+<li>1450byte 를 세팅해서 사용하도록 MTU를 세팅한다.</li>
+</ul>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a target="_blank" rel="noopener" href="https://skstp35.tistory.com/227">https://skstp35.tistory.com/227</a></p>
+<p><a target="_blank" rel="noopener" href="https://atthis.tistory.com/7?category=750237">https://atthis.tistory.com/7?category=750237</a></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T15:01:30.000Z" title="2024. 9. 1. 오전 12:01:30">2024-09-01</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.969Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-overlaynetwork/">container/overlaynetwork</a></span><span class="level-item">9 minutes read (About 1384 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/09/01/docs/overlaynetwork/overlay-network/">overlay network</a></h1><div class="content"><ul>
+<li>가상화 또는 클라우드 기반의 네트워크는 유연하게 확장이 되어야 한다. </li>
+<li>관리하는 Subnet들이 많아지고 연결되어 있는 host의 수가 증가하면 포워딩, 스위칭, 라우팅 과 같은 네트워크 구성이 복잡해진다.</li>
+<li>따라서 물리적인 네트워크망은 고려하지 않고 가상으로 host와 host의 연결만을 고려해서 구현한 기술이 바로 Network Overlay이다.</li>
+</ul>
+<h3 id="오버레이-네트워크-종류"><a href="#오버레이-네트워크-종류" class="headerlink" title="오버레이 네트워크 종류"></a>오버레이 네트워크 종류</h3><ul>
+<li><strong>Virtual Extensible Local Area Network (VxLAN)</strong></li>
+<li>Generic Routing Encapsulation (GRE)</li>
+<li>IP Security (IPsec)</li>
+<li>Multiprotocol Label Switching (MPLS)</li>
+<li>Ethernet Virtual Private Network(EVPN)</li>
+<li>Software-Defined WAN (SD-WAN)</li>
+<li>Software-Defined Access (SD-Access)</li>
+<li>Application Centric Infrastructure (ACI)</li>
+<li>Cisco Virtual Topology System (VTS)</li>
+</ul>
+<h2 id="practice"><a href="#practice" class="headerlink" title="practice"></a>practice</h2><ul>
+<li>hostA 내부 veth와 hostB 내부 veth간 ICMP 통신을 실습</li>
+<li>hostA : 192.168.64.27, hostB: 192.168.64.28</li>
+</ul>
+<h3 id="hostA-설정"><a href="#hostA-설정" class="headerlink" title="hostA 설정"></a>hostA 설정</h3><ul>
+<li>namsepace, bridge, VxLAN을 설정한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># red: VxLAN을 설정한 namespace</span></span><br><span class="line">ip netns add red</span><br><span class="line"><span class="comment"># blue: 실제 통신을 위한 가상 단말기</span></span><br><span class="line">ip netns add blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># red와 blue의 veth peer를 구성</span></span><br><span class="line"><span class="comment"># mtu 1450으로 설정</span></span><br><span class="line">ip <span class="built_in">link</span> add dev red-veth mtu 1450 netns red <span class="built_in">type</span> veth peer name blue-veth mtu 1450 netns blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 실제통신 단말기의 ip와 mac을 설정</span></span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> dev blue-veth address 02:42:c0:a8:00:02</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip addr add dev blue-veth 7.7.7.2/24</span><br><span class="line"></span><br><span class="line"><span class="comment"># red에 bridge device설정 및 ip 세팅</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> add dev br0 <span class="built_in">type</span> bridge</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip addr add dev br0 7.7.7.1/24</span><br><span class="line"></span><br><span class="line"><span class="comment"># endpoint 식별을 위해 id 설정 (VNI)</span></span><br><span class="line"><span class="comment"># proxy옵션: arp 쿼리에 응답</span></span><br><span class="line"><span class="comment"># learning: bridge fdb entry 자동갱신 (수정설정할 필요 없음)</span></span><br><span class="line"><span class="comment"># dstport 4789: UDP port 터널링</span></span><br><span class="line">ip <span class="built_in">link</span> add dev vxlan1 netns red <span class="built_in">type</span> vxlan <span class="built_in">id</span> 42 proxy learning dstport 4789</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># red 내부에 VxLAN, peer veth 장비를 bridge와 연결한다.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> red-veth master br0</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> vxlan1 master br0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 모든 가상장치를 실행한다.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> br0 up</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> vxlan1 up</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> red-veth up</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> blue-veth up</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="hostB-설정"><a href="#hostB-설정" class="headerlink" title="hostB 설정"></a>hostB 설정</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">ip netns add red</span><br><span class="line">ip netns add blue</span><br><span class="line"></span><br><span class="line">ip <span class="built_in">link</span> add dev red-veth mtu 1450 netns red <span class="built_in">type</span> veth peer name blue-veth mtu 1450 netns blue</span><br><span class="line"></span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> dev blue-veth address 02:42:c0:a8:00:03</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip addr add dev blue-veth 7.7.7.3/24</span><br><span class="line"></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> add dev br0 <span class="built_in">type</span> bridge</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip addr add dev br0 7.7.7.1/24</span><br><span class="line"></span><br><span class="line">ip <span class="built_in">link</span> add dev vxlan1 netns red <span class="built_in">type</span> vxlan <span class="built_in">id</span> 42 proxy learning dstport 4789</span><br><span class="line"></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> red-veth master br0</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> vxlan1 master br0</span><br><span class="line"></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> br0 up</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> vxlan1 up</span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> red-veth up</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> blue-veth up</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="hostA-gt-blue"><a href="#hostA-gt-blue" class="headerlink" title="hostA &gt; blue"></a>hostA &gt; blue</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># nsenter --net=/var/run/netns/blue</span></span><br><span class="line">ping 7.7.7.3 <span class="comment"># 실패</span></span><br><span class="line"></span><br><span class="line">\<span class="comment"># ip neigh # arp에 등록이 안되어있음.</span></span><br><span class="line">7.7.7.3 dev blue-veth  FAILED</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># nsenter --net=/var/run/netns/red</span></span><br><span class="line">tcpdump -i br0 <span class="comment"># 로그 확인</span></span><br><span class="line">05:28:15.024947 ARP, Request who-has 7.7.7.3 tell 7.7.7.2, length 28 <span class="comment"># arp 요청만 한다.</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="mac-추가"><a href="#mac-추가" class="headerlink" title="mac 추가"></a>mac 추가</h3><ul>
+<li>VxLAN이 통신을 해야하는데, 해당 ip는 host 내부에 없다.</li>
+<li>hostA의 VxLAN에 통신할 arp 정보를 수동으로 등록해준다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># nsenter --net=/var/run/netns/red</span></span><br><span class="line">\<span class="comment"># ip neigh add 7.7.7.3 lladdr 02:42:c0:a8:00:03 dev vxlan1 # in red namespace</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">\<span class="comment"># ip neigh show</span></span><br><span class="line">7.7.7.3 dev vxlan1 lladdr 02:42:c0:a8:00:03 PERMANENT</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>arp table state</li>
+</ul>
+<p><img src="/blog/img/overlay-network-01.png"></p>
+<ul>
+<li>다시 테스트하면 ARP 통신이 된다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># ping 7.7.7.3</span></span><br><span class="line">PING 7.7.7.3 (7.7.7.3) 56(84) bytes of data.</span><br><span class="line">--- 7.7.7.3 ping statistics ---</span><br><span class="line">5 packets transmitted, 0 received, 100% packet loss, time 4087ms</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># ip neigh # arp테이블에 업데이트됨을 확인</span></span><br><span class="line">7.7.7.3 dev blue-veth lladdr 02:42:c0:a8:00:03 REACHABLE</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>hostA &gt; red</strong></li>
+<li>ARP 통신 이후 ICMP 통신이 실패함을 알 수 있다.</li>
+<li>ICMP (Internet Control Message Protocol) - L3 (Network Layer) 프로토콜</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -i br0</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on br0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">05:32:09.944756 ARP, Request who-has 7.7.7.3 tell 7.7.7.2, length 28</span><br><span class="line">05:32:09.944784 ARP, Reply 7.7.7.3 is-at 02:42:c0:a8:00:03 (oui Unknown), length 28</span><br><span class="line">05:32:09.944861 IP 7.7.7.2 &gt; 7.7.7.3: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1821, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">05:32:10.964330 IP 7.7.7.2 &gt; 7.7.7.3: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1821, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">05:32:11.987056 IP 7.7.7.2 &gt; 7.7.7.3: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1821, <span class="built_in">seq</span> 3, length 64</span><br><span class="line">05:32:13.011901 IP 7.7.7.2 &gt; 7.7.7.3: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 1821, <span class="built_in">seq</span> 4, length 64</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="hostA-gt-blue-1"><a href="#hostA-gt-blue-1" class="headerlink" title="hostA &gt; blue"></a>hostA &gt; blue</h3><ul>
+<li>br0 존재하는 blue 에서 netfilter 룰을 조회.</li>
+<li>FORWARD 가 ACCEPT 임을 확인.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># iptables -t filter -L | grep policy</span></span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>route 조회</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">7.7.7.0/24 dev br0 proto kernel scope <span class="built_in">link</span> src 7.7.7.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>bridge fdb 조회<ul>
+<li>vxlan1의 정보를 확인할 수 있다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># bridge fdb | grep 02:42:c0:a8:00:03</span></span><br><span class="line">02:42:c0:a8:00:03 dev vxlan1 master br0</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>정확한 목적지 ip, VxLAN ip 등을 명시해 fdb entry에 추가한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># bridge fdb add 02:42:c0:a8:00:03 dev vxlan1 self dst 192.168.64.28 vni 42 port 4789</span></span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># bridge fdb | grep 02:42:c0:a8:00:03</span></span><br><span class="line">02:42:c0:a8:00:03 dev vxlan1 master br0</span><br><span class="line">02:42:c0:a8:00:03 dev vxlan1 dst 192.168.64.28 link-netnsid 1 self permanent</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="hostB-gt-red"><a href="#hostB-gt-red" class="headerlink" title="hostB &gt; red"></a>hostB &gt; red</h3><ul>
+<li>hostB에도 필요한 정보가 전부 존재하는지 조회를 해보자.</li>
+<li>arp는 수동으로 추가해주어야 한다.</li>
+<li>fdb는 이미 추가되어 있다. -&gt; vxlan1 추가 시 learning 키워드를 추가해주면, fdb는 필요한 정보를 자동으로 업데이트 한다.<br>(hostA에서 이미 추가되어있어 요청했을 때 자동으로 추가됨)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># nsenter --net=/var/run/netns/red</span></span><br><span class="line">root@seongtki:~<span class="comment"># ip neigh</span></span><br><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">7.7.7.0/24 dev br0 proto kernel scope <span class="built_in">link</span> src 7.7.7.1</span><br><span class="line">root@seongtki:~<span class="comment"># bridge fdb | grep 02:42:c0:a8:00:02</span></span><br><span class="line">02:42:c0:a8:00:02 dev vxlan1 master br0</span><br><span class="line">02:42:c0:a8:00:02 dev vxlan1 dst 192.168.64.27 link-netnsid 1 self</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>arp 정보 추가</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># ip neigh add 7.7.7.2 lladdr 02:42:c0:a8:00:02 dev vxlan1</span></span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># ip neigh show</span></span><br><span class="line">7.7.7.2 dev vxlan1 lladdr 02:42:c0:a8:00:02 PERMANENT</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="최종-테스트"><a href="#최종-테스트" class="headerlink" title="최종 테스트"></a>최종 테스트</h3><p>hostA &gt; blue</p>
+<ul>
+<li>정상적으로 응답</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# ping 7.7.7.3</span><br><span class="line">PING 7.7.7.3 (7.7.7.3) 56(84) bytes of data.</span><br><span class="line">64 bytes from 7.7.7.3: icmp_seq=153 ttl=64 time=1008 ms</span><br><span class="line">64 bytes from 7.7.7.3: icmp_seq=154 ttl=64 time=4.79 ms</span><br><span class="line">64 bytes from 7.7.7.3: icmp_seq=155 ttl=64 time=3.85 ms</span><br><span class="line">64 bytes from 7.7.7.3: icmp_seq=156 ttl=64 time=3.37 ms</span><br></pre></td></tr></table></figure>
+
+<p>hostB &gt; red</p>
+<ul>
+<li>정상적인 통신로그 조회</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# tcpdump -i br0</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on br0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">03:12:11.488557 IP 7.7.7.2 &gt; 7.7.7.3: ICMP echo request, id 1958, seq 174, length 64</span><br><span class="line">03:12:11.488648 IP 7.7.7.3 &gt; 7.7.7.2: ICMP echo reply, id 1958, seq 174, length 64</span><br><span class="line">03:12:12.490214 IP 7.7.7.2 &gt; 7.7.7.3: ICMP echo request, id 1958, seq 175, length 64</span><br><span class="line">03:12:12.490423 IP 7.7.7.3 &gt; 7.7.7.2: ICMP echo reply, id 1958, seq 175, length 64</span><br><span class="line">03:12:13.495586 IP 7.7.7.2 &gt; 7.7.7.3: ICMP echo request, id 1958, seq 176, length 64</span><br><span class="line">03:12:13.495828 IP 7.7.7.3 &gt; 7.7.7.2: ICMP echo reply, id 1958, seq 176, length 64</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>지금까지 구성한 overlay network 구성도.</li>
+</ul>
+<p><img src="/blog/img/overlay-network-02.png"></p>
+<h3 id="reference"><a href="#reference" class="headerlink" title="reference"></a>reference</h3><p><a target="_blank" rel="noopener" href="https://ebt-forti.tistory.com/m/145?category=849281">https://ebt-forti.tistory.com/m/145?category=849281</a></p>
+<p><a target="_blank" rel="noopener" href="https://netpple.github.io/docs/make-container-without-docker/">https://netpple.github.io/docs/make-container-without-docker/</a></p>
+</div></article></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:40:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/network-mode/">Calico Network Mode</a></p><p class="categories"><a href="/blog/categories/calico-networkmode/">calico/networkmode</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:20:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-communication/">Calico Communication</a></p><p class="categories"><a href="/blog/categories/calico-communication/">calico/communication</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:00:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-concept/">Calico Concept</a></p><p class="categories"><a href="/blog/categories/calico-concept/">calico/concept</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:32.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/kind/">kind</a></p><p class="categories"><a href="/blog/categories/k8s-kind/">k8s/kind</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:31.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/pause-container/">PAUSE 컨테이너</a></p><p class="categories"><a href="/blog/categories/k8s-PAUSE-Container/">k8s/PAUSE-Container</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>

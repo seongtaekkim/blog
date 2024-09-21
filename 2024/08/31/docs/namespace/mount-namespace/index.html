@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>mount namespace - Blog</title><link rel="manifest" href="/blog/manifest.json"><meta name="application-name" content="Blog"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Blog"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta name="description" content="네임스페이스(namespace) 하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 격리된 환경을 제공하는 *경량 프로세스 가상화 기술 경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미  LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그 마운트 네임스페이스 : CLONE_NEWNS  UTS 네임스페이스 : C"><meta property="og:type" content="blog"><meta property="og:title" content="mount namespace"><meta property="og:url" content="https://seongtaekkim.github.io/blog/2024/08/31/docs/namespace/mount-namespace/"><meta property="og:site_name" content="Blog"><meta property="og:description" content="네임스페이스(namespace) 하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 격리된 환경을 제공하는 *경량 프로세스 가상화 기술 경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미  LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그 마운트 네임스페이스 : CLONE_NEWNS  UTS 네임스페이스 : C"><meta property="og:locale" content="en_US"><meta property="og:image" content="https://seongtaekkim.github.io/blog/img/layer-12.png"><meta property="og:image" content="https://seongtaekkim.github.io/blog/img/layer-13.png"><meta property="article:published_time" content="2024-08-31T10:50:35.000Z"><meta property="article:modified_time" content="2024-09-21T22:20:08.967Z"><meta property="article:author" content="Seongtaek Kim"><meta property="twitter:card" content="summary"><meta property="twitter:image:src" content="https://seongtaekkim.github.io/blog/img/layer-12.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"https://seongtaekkim.github.io/blog/2024/08/31/docs/namespace/mount-namespace/"},"headline":"mount namespace","image":["https://seongtaekkim.github.io/blog/img/layer-12.png","https://seongtaekkim.github.io/blog/img/layer-13.png"],"datePublished":"2024-08-31T10:50:35.000Z","dateModified":"2024-09-21T22:20:08.967Z","author":{"@type":"Person","name":"Seongtaek Kim"},"publisher":{"@type":"Organization","name":"Blog","logo":{"@type":"ImageObject"}},"description":"네임스페이스(namespace) 하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 격리된 환경을 제공하는 *경량 프로세스 가상화 기술 경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미  LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그 마운트 네임스페이스 : CLONE_NEWNS  UTS 네임스페이스 : C"}</script><link rel="canonical" href="https://seongtaekkim.github.io/blog/2024/08/31/docs/namespace/mount-namespace/"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.0.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/blog/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/css/justifiedGallery.min.css"><!--!--><!--!--><style>.pace{-webkit-pointer-events:none;pointer-events:none;-webkit-user-select:none;-moz-user-select:none;user-select:none}.pace-inactive{display:none}.pace .pace-progress{background:#3273dc;position:fixed;z-index:2000;top:0;right:100%;width:100%;height:2px}</style><script src="https://cdn.jsdelivr.net/npm/pace-js@1.2.4/pace.min.js"></script><!--!--><!--!--><!-- hexo injector head_end start --><script>
+  (function () {
+      function switchTab() {
+          if (!location.hash) {
+            return;
+          }
+
+          const id = '#' + CSS.escape(location.hash.substring(1));
+          const $tabMenu = document.querySelector(`.tabs a[href="${id}"]`);
+          if (!$tabMenu) {
+            return;
+          }
+
+          const $tabMenuContainer = $tabMenu.parentElement.parentElement;
+          Array.from($tabMenuContainer.children).forEach($menu => $menu.classList.remove('is-active'));
+          Array.from($tabMenuContainer.querySelectorAll('a'))
+              .map($menu => document.getElementById($menu.getAttribute("href").substring(1)))
+              .forEach($content => $content.classList.add('is-hidden'));
+
+          if ($tabMenu) {
+              $tabMenu.parentElement.classList.add('is-active');
+          }
+          const $activeTab = document.querySelector(id);
+          if ($activeTab) {
+              $activeTab.classList.remove('is-hidden');
+          }
+      }
+      switchTab();
+      window.addEventListener('hashchange', switchTab, false);
+  })();
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:50:35.000Z" title="2024. 8. 31. 오후 7:50:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">9 minutes read (About 1362 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">mount namespace</h1><div class="content"><h2 id="네임스페이스-namespace"><a href="#네임스페이스-namespace" class="headerlink" title="네임스페이스(namespace)"></a>네임스페이스(namespace)</h2><ul>
+<li>하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 <strong>격리된 환경을 제공</strong>하는 *<em>경량 프로세스 가상화 기술</em></li>
+<li>경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미</li>
+</ul>
+<h3 id="LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그"><a href="#LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그" class="headerlink" title="LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그"></a>LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그</h3><ul>
+<li><p>마운트 네임스페이스 : CLONE_NEWNS</p>
+</li>
+<li><p>UTS 네임스페이스 : CLONE_NEWUTS</p>
+</li>
+<li><p>IPC 네임스페이스 : CLONE_NEWIPC</p>
+</li>
+<li><p>PID 네임스페이스 : CLONE_NEWPID</p>
+</li>
+<li><p>사용자 네임스페이스 : CLONE_NEWUSER</p>
+</li>
+<li><p>네트워크 네임스페이스 : CLONE_NEWNET</p>
+</li>
+<li><p>상수플래그 정의 (&#x2F;usr&#x2F;include&#x2F;linux&#x2F;sched.h)</p>
+</li>
+</ul>
+<p><img src="/blog/img/layer-12.png"></p>
+<h3 id="마운트-mount-네임스페이스란"><a href="#마운트-mount-네임스페이스란" class="headerlink" title="마운트(mount) 네임스페이스란?"></a>마운트(mount) 네임스페이스란?</h3><ul>
+<li>프로세스와 그 자식 프로세스가 각기 다른 파일시스템 마운트 지점을 제공</li>
+<li>기본적으로 모든 프로세스는 동일한 기본 네임스페이스를 공유하기 때문에, 파일 시스템을 마운트하거나 마운트를 해제하는 등의 변경을 모든 프로세스가 인지할 수 있음</li>
+<li>만약 clone() 시스템 콜을 통해 프로세스를 생성할 때 CLONE_NEWNS 플래그가 전달되면, 새로 생성되는 프로세스는 호출한 프로세스가 갖고있는 마운트 트리의 사본을 가져옴</li>
+<li>이 사본은 부모 프로세스에 영향을 미치지 않고 새로 생성된 프로세스가 파일시스템을 마운트 or 언마운트 등의 변경을 할 수 있도록 함</li>
+<li>이 시점부터 기본 네임스페이스의 모든 파일시스템 마운트 및 언마운트는 새로운 네임스페이스에서 볼 수 있지만, 각각의 프로세스 별 마운트 네임스페이스 내부에서의 변경을 해당 프로세스의 네임스페이스 밖에서는 알 수 없음</li>
+</ul>
+<p>마운트 네임스페이스는 “mount point”를 격리 한다.<br>여기서 mount란 루트파일시스템에 서브파일시스템을 부착하는 시스템콜이고, mount point는 파일시스템이 부착(mount) 될 위치(디렉터리)다.</p>
+<p>mount 하면 원래 디렉터리가 포함하고 있던 파일, 하위 디렉터리 등이 보이지 않고, 새로 부착된 파일시스템의 파일들이 보이게 됩니다. 예를 들어 USB 드라이브를 지정한 mount point로 부착을 시키면, 해당 위치에는 부착된 USB의 파일들이 보이게 됩니다. </p>
+<p>마운트 네임스페이스가 mount point를 격리한다는 것은 파일시스템 마운트와 해제 등의 변경사항들이 네임스페이스 밖에서는 보이지 않고, 외부에 전혀 영향을 주지 않음을 의미합니다. 마운트 네임스페이스가 생김으로써 컨테이너를 위해 pivot_root를 안전하게 실행할 수 있게 되었습니다.</p>
+<h3 id="unshare-mount-namespace"><a href="#unshare-mount-namespace" class="headerlink" title="unshare mount namespace"></a>unshare mount namespace</h3><h3 id="mount-플래그를-unshared-시스템-콜에-전달"><a href="#mount-플래그를-unshared-시스템-콜에-전달" class="headerlink" title="mount 플래그를 unshared 시스템 콜에 전달"></a>mount 플래그를 unshared 시스템 콜에 전달</h3><ul>
+<li>부모 프로세스의 mounts를 복제</li>
+<li>현재 bash 프로세스를 자체 마운트 네임스페이스로 이동</li>
+<li>“-m”옵션 -&gt; 마운트 네임스페이스</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unshare -m</span><br><span class="line">root@seongtki:/tmp<span class="comment"># mkdir tmp1</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>root filesystem이 같기 때문에 양쪽다 폴더가 보임</p>
+</li>
+<li><p>mount는 namespace 내부에서만 적용되어 보인다.</p>
+</li>
+<li><p>tmp1 : mount point</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount -o size=1m -t tmpfs tmpfs tmp1</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">tmpfs on /tmp/tmp1 <span class="built_in">type</span> tmpfs (rw,relatime,size=1024k)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># readlink 심폴릭링크를 통해 namepsace id를 가져올 수 있다.</span></span><br><span class="line"><span class="comment"># /proc/$$ 는 현재 bash 쉘의 프로세스 ID(PID)</span></span><br><span class="line">$ <span class="built_in">readlink</span> /proc/$$/ns/mnt</span><br><span class="line">mnt:[4026532211]</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<ul>
+<li>host</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">root@seongtki:/tmp<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mount namespace는 per-process mount isolation을 제공 (프로세스에 격리된 파일시스템 마운트 제공)</li>
+</ul>
+<h3 id="per-process-mount-isolation"><a href="#per-process-mount-isolation" class="headerlink" title="per-process mount isolation"></a>per-process mount isolation</h3><ul>
+<li>new-root 에 nginx를 설치한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">export</span> $(docker create nginx:latest) | tar -C new-root -xvf -</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1 directory, 0 files</span><br><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># tree -L 1 new-root</span></span><br><span class="line">new-root</span><br><span class="line">├── bin -&gt; usr/bin</span><br><span class="line">├── boot</span><br><span class="line">├── dev</span><br><span class="line">├── docker-entrypoint.d</span><br><span class="line">├── docker-entrypoint.sh</span><br><span class="line">├── etc</span><br><span class="line">├── hello</span><br><span class="line">├── home</span><br><span class="line">├── lib -&gt; usr/lib</span><br><span class="line">├── media</span><br><span class="line">├── mnt</span><br><span class="line">├── opt</span><br><span class="line">├── proc</span><br><span class="line">├── root</span><br><span class="line">├── run</span><br><span class="line">├── sbin -&gt; usr/sbin</span><br><span class="line">├── srv</span><br><span class="line">├── sys</span><br><span class="line">├── tmp</span><br><span class="line">├── usr</span><br><span class="line">├── var</span><br><span class="line">└── world</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>mount</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># mount -t tmpfs none new-root</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># df -h | grep new</span></span><br><span class="line">none                               2.0G     0  2.0G   0% /tmp/tmp1/new-root</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="pivot-root-적용"><a href="#pivot-root-적용" class="headerlink" title="pivot_root 적용"></a>pivot_root 적용</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/<span class="comment"># mkdir old-root</span></span><br><span class="line">/<span class="comment"># pivot_root . old-root # 현재디렉토리를 루트파일시스템으로 하고, old-root 폴더에 기존 루트디렉토리를 마운트시킨다.</span></span><br><span class="line"></span><br><span class="line">/<span class="comment"># nginx -g &quot;daemon off;&quot; # nginx 실행</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>host에서 nginx pid를 이용해서 namespace id를 가져와 해당 파일시스템을 조회해본다.</li>
+<li>lsns: 현존하는 namespace를 확인하기 위해 사용하는 명령어</li>
+</ul>
+<p><img src="/blog/img/layer-13.png"></p>
+<ul>
+<li>자체적인 루트파일시스템이 보장되므로 서버 환경 (시스템 파일, 의존성 라이브러리 충돌, 경로 설정 등) 으로 부터 자유롭다.</li>
+<li>서버의 파일시스템으로 부터 완전하게 분리됨으로써 보안상 안전함</li>
+<li>컨테이너 내에서 자유롭게 마운트 변경이 가능하고 파일시스템을 확장할 수 있다.</li>
+</ul>
+</div><div class="article-licensing box"><div class="licensing-title"><p>mount namespace</p><p><a href="https://seongtaekkim.github.io/blog/2024/08/31/docs/namespace/mount-namespace/">https://seongtaekkim.github.io/blog/2024/08/31/docs/namespace/mount-namespace/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Seongtaek Kim</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2024-08-31</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2024-09-22</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icons" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="icon fab fa-creative-commons"></i></a><a class="icons" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="icon fab fa-creative-commons-by"></i></a><a class="icons" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="icon fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="notification is-danger">You need to set <code>install_url</code> to use ShareThis. Please set it in <code>_config.yml</code>.</div></article></div><div class="card"><div class="card-content"><h3 class="menu-label has-text-centered">Like this article? Support the author with</h3><div class="buttons is-centered"><a class="button donate" href="/blog/" target="_blank" rel="noopener" data-type="afdian"><span class="icon is-small"><i class="fas fa-charging-station"></i></span><span>Afdian.net</span></a><a class="button donate" data-type="alipay"><span class="icon is-small"><i class="fab fa-alipay"></i></span><span>Alipay</span><span class="qrcode"><img src="/blog/" alt="Alipay"></span></a><a class="button donate" href="/blog/" target="_blank" rel="noopener" data-type="buymeacoffee"><span class="icon is-small"><i class="fas fa-coffee"></i></span><span>Buy me a coffee</span></a><a class="button donate" href="/blog/" target="_blank" rel="noopener" data-type="patreon"><span class="icon is-small"><i class="fab fa-patreon"></i></span><span>Patreon</span></a><div class="notification is-danger">You forgot to set the <code>business</code> or <code>currency_code</code> for Paypal. Please set it in <code>_config.yml</code>.</div><a class="button donate" data-type="wechat"><span class="icon is-small"><i class="fab fa-weixin"></i></span><span>Wechat</span><span class="qrcode"><img src="/blog/" alt="Wechat"></span></a></div></div></div><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/blog/2024/08/31/docs/overlayFS/container-layer/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">container layer</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/blog/2024/08/31/docs/namespace/namespace/"><span class="level-item">network namespace</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div class="notification is-danger">You forgot to set the <code>shortname</code> for Disqus. Please set it in <code>_config.yml</code>.</div></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">21</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:40:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/network-mode/">Calico Network Mode</a></p><p class="categories"><a href="/blog/categories/calico-networkmode/">calico/networkmode</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:20:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-communication/">Calico Communication</a></p><p class="categories"><a href="/blog/categories/calico-communication/">calico/communication</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-21T21:00:35.000Z">2024-09-22</time></p><p class="title"><a href="/blog/2024/09/22/docs/calico/calico-concept/">Calico Concept</a></p><p class="categories"><a href="/blog/categories/calico-concept/">calico/concept</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:32.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/kind/">kind</a></p><p class="categories"><a href="/blog/categories/k8s-kind/">k8s/kind</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-09-07T15:07:31.000Z">2024-09-08</time></p><p class="title"><a href="/blog/2024/09/08/docs/pause-container/">PAUSE 컨테이너</a></p><p class="categories"><a href="/blog/categories/k8s-PAUSE-Container/">k8s/PAUSE-Container</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/blog/js/column.js"></script><script src="/blog/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/blog/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.10.0/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.8.1/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><!--!--><!--!--><!--!--><script src="/blog/js/main.js" defer></script><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"></div></div></div><script src="/blog/js/insight.js" defer></script><script>document.addEventListener('DOMContentLoaded', function () {
+            loadInsight({"contentUrl":"/blog/content.json"}, {"hint":"Type something...","untitled":"(Untitled)","posts":"Posts","pages":"Pages","categories":"Categories","tags":"Tags"});
+        });</script></body></html>
