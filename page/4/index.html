@@ -29,7 +29,712 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T09:50:35.000Z" title="2024. 8. 31. 오후 6:50:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.968Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">8 minutes read (About 1229 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/user-namespace/">user namespace</a></h1><div class="content"><ul>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:40:35.000Z" title="2024. 8. 31. 오후 7:40:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">7 minutes read (About 1072 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/bridge/">bridge</a></h1><div class="content"><h3 id="bridge"><a href="#bridge" class="headerlink" title="bridge?"></a>bridge?</h3><ul>
+<li>하나의 LAN 내부에서 단말이 많아질 경우 bridge를 사용하여 개선할 수 있다.</li>
+<li>단말기가 많아졌을 경우 발생하는 Collision Domain을 분리해 주는 역할을 한다.</li>
+<li>2계층 송수신을 처리한다.</li>
+</ul>
+<h3 id="Ethenet-Frame"><a href="#Ethenet-Frame" class="headerlink" title="Ethenet Frame"></a>Ethenet Frame</h3><ul>
+<li>OSI L2계층 (data link) 을 처리 한다.</li>
+<li>패킷 유입 &gt; 목적지 MAC 주소확인 &gt; 주소 테이블과 비교 &gt; 해당 디바이스가 연결된 포트로 패킷 전달.</li>
+</ul>
+<p><img src="/blog/img/bridge-01.png"></p>
+<h3 id="bridge-기능"><a href="#bridge-기능" class="headerlink" title="bridge 기능"></a>bridge 기능</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Learning.</span><br><span class="line">출발지의 맥 어드레스를 배운다.</span><br><span class="line">브리지/스위치는 포트에 연결된 PC &quot;A&quot;가 통신을 위해 프레임을 내보내면</span><br><span class="line">그때 이 PC의 MAC 주소를 읽어서 자신의 bridge table에 저장한다.</span><br><span class="line">** bridge-table: 스위치나 브리지에 연결된 사용자들의 맥 주소를 저장하는 데이터베이스</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Flooding.</span><br><span class="line">들어온 포트를 제외한 나머지를 모든 포트로 데이터를 뿌린다.</span><br><span class="line">PC &quot;A&quot;가 통신하고자 하는 목적지 PC의 맥 주소가 브리지 테이블에 없으면</span><br><span class="line">모든 포트에 데이터를 전송한다. (브로드캐스트 라고 생각해도 됨. 브로드캐스트도 Flooding이 발생함)</span><br><span class="line"></span><br><span class="line">Forwarding</span><br><span class="line">Flooding과 반대로 목적지 PC의 맥 주소를 알고 그 목적지가 브릿지를 건너야 할때</span><br><span class="line">오직 그 해당 포트쪽으로만 데이터를 전송한다.</span><br><span class="line"> </span><br><span class="line">Filtering</span><br><span class="line">브릿지를 넘어가지 못하게 막는것.</span><br><span class="line">출발지와 목적지가 같은 세그먼트에 있을때 일어남.</span><br><span class="line">[세그먼트: 브릿지, 라우터, 허브 또는 스위치에 의해 묶어있는 네트워크의 한 부분]</span><br><span class="line">이 Filtering 기능 때문에 허브와 다르게 콜리젼 도메인을 나눌 수 있다.</span><br><span class="line"></span><br><span class="line">Aging</span><br><span class="line">브리지 테이블에 출발지의 MAC 주소가 들어오면 300초 동안 타이머를 설정한다.</span><br><span class="line">300초가 지나도록 다시 그 출발지 주소의 프레임이 들어오지 않으면 브리지 테이블에서 삭제한다.</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/img/bridge-02.png"></p>
+<h2 id="Netfilter"><a href="#Netfilter" class="headerlink" title="Netfilter"></a>Netfilter</h2><p>커널 모듈로 <strong>네트워크 패킷을 처리</strong>하는 프레임워크이다.<br>네트워크 연산을 핸들러 형태로 처리할 수 있도록 hook 지점을 제공<br>패킷이 어떻게 <strong>전송될 지</strong>에 대한 결정 방법을 제공한다.</p>
+<p><img src="/blog/img/bridge-03.png"></p>
+<h3 id="Netfilter-항목"><a href="#Netfilter-항목" class="headerlink" title="Netfilter 항목"></a>Netfilter 항목</h3><table>
+<thead>
+<tr>
+<th>항목</th>
+<th>내용</th>
+<th>키워드</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>table</td>
+<td>용도별 rule 모음</td>
+<td>filter, nat, mangle</td>
+</tr>
+<tr>
+<td>chain</td>
+<td>패팃이 지나가는 hook 별로 존재</td>
+<td>PREROUTING, FORWARD, INPUT (netfilter의 hook에 매핑)</td>
+</tr>
+<tr>
+<td>rule</td>
+<td>table과 chain matrix에 대해서 정의함</td>
+<td>protocol type, dest&#x2F;src address ..</td>
+</tr>
+<tr>
+<td>action(target)</td>
+<td>패킷이 룰에 매칭되면 트리거 됨</td>
+<td>ACCEPT, DROP, REJECT</td>
+</tr>
+</tbody></table>
+<h3 id="red-gt-bridge-gt-blue-통신"><a href="#red-gt-bridge-gt-blue-통신" class="headerlink" title="red -&gt; bridge -&gt; blue 통신"></a>red -&gt; bridge -&gt; blue 통신</h3><ul>
+<li><p>bridge 관점에서 보자.</p>
+</li>
+<li><p>패킷은 netfilter에서 파놓은 여러 hook을 통과하는데 hook별로 iptables에 정의한 각 체인룰을 점검한다.</p>
+</li>
+<li><p>hook에 정의된 체인은 테이블 순서대로 등록된 룰을 체크하고 조건을 만족하면 action(target)을 트리거한다.</p>
+</li>
+<li><p>외부(src) -&gt; 외부(dst) 패킷이므로 FORWARD 체인의 filter 테이블 룰을 봐야 한다.</p>
+<ul>
+<li>FORWARD: NF_IP_FORWARD (hook) 에 등록된 체인</li>
+<li>NF_IP_FORWARD: incoming 패킷이 다른 호스트로 포워딩 되는 경우 트리거되는 netfilter hook</li>
+<li>filter(table): 패킷을 목적지로 전송여부를 결정</li>
+</ul>
+</li>
+<li><p><strong>rule 설정</strong></p>
+<ul>
+<li><p><strong>테이블 filter 에서 FORWARD 체인을 추가한다. 출발지가 1.1.1.0&#x2F;24 이면, ACCEPT 로 설정한다.</strong></p>
+</li>
+<li><pre><code class="sh">iptables -t filter -A FORWARD -s 1.1.1.0/24 -j ACCEPT
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="iptalbes"><a href="#iptalbes" class="headerlink" title="iptalbes"></a>iptalbes</h3><ul>
+<li>netfilter가 파놓은 hook에 룰을 등록하고 관리하는 방법을 제공하는 툴</li>
+<li>netfilter에 내가 원하는 정책을 넣어야 하는데 그럴 때 사용하는 프로그램. 룰을 넣고 조회하는 역할을 한다.</li>
+</ul>
+<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><p>A ns 에서 B ns 로 통신하기 위해 중간에 bridge 를 통과한다.<br>bridge 는 2계층 데이터 를 처리하는데, A, B 사이의 ARP 테이블을 채워주게 한다.<br>ping의 경우, ICMP를 이용해 송수신하는데 이 때 Netfilter 의 hook이 트리거 되어 ACCEPT 인 경우에만<br>송수신이 가능하다.<br>결국은 arp, bridge fdb 정보를 이용해서 통신하고 iptables rule에 따라 전송여부가 결정된다.</p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:30:35.000Z" title="2024. 8. 31. 오후 7:30:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">12 minutes read (About 1818 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/bridge-test/">bridge test</a></h1><div class="content"><ul>
+<li><p>namespace의 veth는 bridge를 통해서 네트워크 통신을 할 수 있도록 구성하는 테스트를 진행한다.</p>
+<ol>
+<li><p>namespace, bridge 를 구성하고</p>
+</li>
+<li><p>netfilter로 데이터 전송에 대한 정책을 확인하고</p>
+</li>
+<li><p>ping 테스트 및 dump 를 확인한다.</p>
+</li>
+<li><p>테스트 후에는 fdb, arp등을 확인한다.</p>
+</li>
+</ol>
+</li>
+</ul>
+<h3 id="namespace-bridge-구성"><a href="#namespace-bridge-구성" class="headerlink" title="namespace, bridge 구성"></a>namespace, bridge 구성</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># add red namespace, virtual ethenet, bridge</span></span><br><span class="line">ip netns add red</span><br><span class="line">ip <span class="built_in">link</span> add veth-red <span class="built_in">type</span> veth peer name brd-red</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> veth-red netns red</span><br><span class="line"></span><br><span class="line"><span class="comment"># add blue namespace, virtual ethenet, bridge</span></span><br><span class="line">ip netns add blue</span><br><span class="line">ip <span class="built_in">link</span> add veth-blue <span class="built_in">type</span> veth peer name brd-blue</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> veth-blue netns blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># bridge를 추가하고, namesapce에 연결된 bridge선과 연결한다.</span></span><br><span class="line">ip <span class="built_in">link</span> add brd0 <span class="built_in">type</span> bridge</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-red master brd0</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-blue master brd0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 각 namespace의 virtual ethenet 에 ip를 할당.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip addr add 7.7.7.2/24 dev veth-red</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip addr add 7.7.7.3/24 dev veth-blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 모든 스위치를 켜준다.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> veth-red up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-red up</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> veth-blue up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-blue up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd0 up</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ip-address-show"><a href="#ip-address-show" class="headerlink" title="ip address show"></a>ip address show</h3><ul>
+<li><p>Network interface 를 확인한다.</p>
+</li>
+<li><p>bridge 선이 어디에 연결되어 있는 지 확인 가능하다.</p>
+<ul>
+<li>3: brd-red@if4 는 4: veth-red@if3 와 연결되어 있다.</li>
+</ul>
+</li>
+<li><p>bridge</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">3: brd-red@if4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master brd0 state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether ba:0e:67:a9:5f:55 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::b80e:67ff:fea9:5f55/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line">5: brd-blue@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master brd0 state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 06:31:1c:4b:e0:85 brd ff:ff:ff:ff:ff:ff link-netnsid 1</span><br><span class="line">    inet6 fe80::431:1cff:fe4b:e085/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">       </span><br><span class="line">7: brd0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 06:31:1c:4b:e0:85 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet6 fe80::431:1cff:fe4b:e085/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>red</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># nsenter --net=/var/run/netns/red</span></span><br><span class="line">root@seongtki:~<span class="comment"># ip address show</span></span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: veth-red@if3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 92:1f:c1:d7:4c:d0 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 1.1.1.1/24 scope global veth-red</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::901f:c1ff:fed7:4cd0/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># nsenter --net=/var/run/netns/blue</span></span><br><span class="line">root@seongtki:~<span class="comment"># ip address show</span></span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">6: veth-blue@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 22:6a:f6:44:98:6b brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 1.1.1.2/24 scope global veth-blue</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::206a:f6ff:fe44:986b/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="ip-route-show"><a href="#ip-route-show" class="headerlink" title="ip route show"></a>ip route show</h3><ul>
+<li>bridge</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100</span><br><span class="line">10.0.2.0/24 dev enp0s3 proto kernel scope <span class="built_in">link</span> src 10.0.2.15</span><br><span class="line">10.0.2.2 dev enp0s3 proto dhcp scope <span class="built_in">link</span> src 10.0.2.15 metric 100</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>red</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route show</span></span><br><span class="line">1.1.1.0/24 dev veth-red proto kernel scope <span class="built_in">link</span> src 1.1.1.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">1.1.1.0/24 dev veth-blue proto kernel scope <span class="built_in">link</span> src 1.1.1.2</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="bridge-fdb-show"><a href="#bridge-fdb-show" class="headerlink" title="bridge fdb show"></a>bridge fdb show</h3><ul>
+<li>bridge</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># bridge fdb show</span></span><br><span class="line">33:33:00:00:00:01 dev enp0s3 self permanent</span><br><span class="line">01:00:5e:00:00:01 dev enp0s3 self permanent</span><br><span class="line">33:33:ff:fb:6f:5e dev enp0s3 self permanent</span><br><span class="line">01:80:c2:00:00:00 dev enp0s3 self permanent</span><br><span class="line">01:80:c2:00:00:03 dev enp0s3 self permanent</span><br><span class="line">01:80:c2:00:00:0e dev enp0s3 self permanent</span><br><span class="line">ba:0e:67:a9:5f:55 dev brd-red vlan 1 master brd0 permanent</span><br><span class="line">ba:0e:67:a9:5f:55 dev brd-red master brd0 permanent</span><br><span class="line">33:33:00:00:00:01 dev brd-red self permanent</span><br><span class="line">01:00:5e:00:00:01 dev brd-red self permanent</span><br><span class="line">33:33:ff:a9:5f:55 dev brd-red self permanent</span><br><span class="line">06:31:1c:4b:e0:85 dev brd-blue master brd0 permanent</span><br><span class="line">06:31:1c:4b:e0:85 dev brd-blue vlan 1 master brd0 permanent</span><br><span class="line">33:33:00:00:00:01 dev brd-blue self permanent</span><br><span class="line">01:00:5e:00:00:01 dev brd-blue self permanent</span><br><span class="line">33:33:ff:4b:e0:85 dev brd-blue self permanent</span><br><span class="line">33:33:00:00:00:01 dev brd0 self permanent</span><br><span class="line">01:00:5e:00:00:01 dev brd0 self permanent</span><br><span class="line">33:33:ff:4b:e0:85 dev brd0 self permanent</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>red</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># bridge fdb show</span></span><br><span class="line">33:33:00:00:00:01 dev veth-red self permanent</span><br><span class="line">01:00:5e:00:00:01 dev veth-red self permanent</span><br><span class="line">33:33:ff:d7:4c:d0 dev veth-red self permanent</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># bridge fdb show</span></span><br><span class="line">33:33:00:00:00:01 dev veth-blue self permanent</span><br><span class="line">01:00:5e:00:00:01 dev veth-blue self permanent</span><br><span class="line">33:33:ff:44:98:6b dev veth-blue self permanent</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="netfilter-설정확인"><a href="#netfilter-설정확인" class="headerlink" title="netfilter 설정확인"></a>netfilter 설정확인</h3><ul>
+<li>host에서 진행한다.</li>
+<li>현재 os는 모두 ACCEPT 로 되어 있다.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# iptables -t filter -L  | grep policy</span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>하지만 아래처럼 FORWARD가 DROP으로 되어 있는 경우 정책을 변경해 주어야한다.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# iptables -t filter -L</span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">target     prot opt source               destination</span><br><span class="line"></span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target     prot opt source               destination</span><br><span class="line">DROP       all  --  1.1.1.0/24           anywhere</span><br><span class="line"></span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br><span class="line">target     prot opt source               destination</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>정책 변경<ul>
+<li>INPUT: 로컬로 들어오는 패킷</li>
+<li>FORWARD: 외부 패킷이 방화벽을 통과해 다른 네트워크로 흘러가는 것을 제어</li>
+<li>OUTPUT: 외부로 나가는 패킷</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -t : table</span></span><br><span class="line"><span class="comment"># -A : Append chain rule</span></span><br><span class="line"><span class="comment"># -s : src address</span></span><br><span class="line"><span class="comment"># -j : jump to ACCEPT</span></span><br><span class="line">iptables -t filter -A FORWARD -s 1.1.1.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 정책 삭제</span></span><br><span class="line">iptables -D FORWARD 1 <span class="comment"># 1은 rownum을 의미</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="FORWARD-DROP-일-때-테스트"><a href="#FORWARD-DROP-일-때-테스트" class="headerlink" title="FORWARD: DROP  일 때 테스트"></a>FORWARD: DROP  일 때 테스트</h3><ul>
+<li><p>ARP 까지 성공하지만, ICMP는 실패하여 ping 테스트를 할 수 없다.</p>
+</li>
+<li><p>red</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping -c 1 1.1.1.2</span></span><br><span class="line">PING 1.1.1.2 (1.1.1.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=1 ttl=64 time=0.038 ms</span><br><span class="line"></span><br><span class="line">--- 1.1.1.2 ping statistics ---</span><br><span class="line">1 packets transmitted, 1 received, 0% packet loss, time 0ms</span><br><span class="line">rtt min/avg/max/mdev = 0.038/0.038/0.038/0.000 ms</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>bridge</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -l -i brd0</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on brd0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">04:22:46.256635 IP one.one.one.one &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2338, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:22:46.256661 IP 1.1.1.2 &gt; one.one.one.one: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2338, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:22:51.285442 ARP, Request who-has one.one.one.one tell 1.1.1.2, length 28</span><br><span class="line">04:22:51.285451 ARP, Request who-has 1.1.1.2 tell one.one.one.one, length 28</span><br><span class="line">04:22:51.285478 ARP, Reply one.one.one.one is-at 92:1f:c1:d7:4c:d0 (oui Unknown), length 28</span><br><span class="line">04:22:51.285483 ARP, Reply 1.1.1.2 is-at 22:6a:f6:44:98:6b (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -l -i veth-blue</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on veth-blue, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line"></span><br><span class="line">04:22:46.256643 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2338, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:22:46.256660 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2338, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:22:51.285435 ARP, Request who-has 1.1.1.1 tell 1.1.1.2, length 28</span><br><span class="line">04:22:51.285471 ARP, Request who-has 1.1.1.2 tell 1.1.1.1, length 28</span><br><span class="line">04:22:51.285482 ARP, Reply 1.1.1.2 is-at 22:6a:f6:44:98:6b (oui Unknown), length 28</span><br><span class="line">04:22:51.285483 ARP, Reply 1.1.1.1 is-at 92:1f:c1:d7:4c:d0 (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="ping-test-성공"><a href="#ping-test-성공" class="headerlink" title="ping test (성공)"></a>ping test (성공)</h3><ul>
+<li><p>red -&gt; bridge -&gt; blue</p>
+</li>
+<li><p>arp, bridge fdb 정보를 이용해서 통신하고 iptables rule 으로 전송여부를 결정한다</p>
+<ul>
+<li>통신 후 arp, bridge fdb 에 통신한 virtual ethenet에 mac정보 확인</li>
+</ul>
+</li>
+<li><p>red</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 1.1.1.2</span></span><br><span class="line">PING 1.1.1.2 (1.1.1.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=1 ttl=64 time=0.065 ms</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=2 ttl=64 time=0.078 ms</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=3 ttl=64 time=0.073 ms</span><br><span class="line">64 bytes from 1.1.1.2: icmp_seq=4 ttl=64 time=0.074 ms</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>bridge</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -l -i brd0</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on brd0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">04:03:41.050595 ARP, Request who-has 1.1.1.2 tell one.one.one.one, length 28</span><br><span class="line">04:03:41.050625 ARP, Reply 1.1.1.2 is-at 22:6a:f6:44:98:6b (oui Unknown), length 28</span><br><span class="line">04:03:41.050629 IP one.one.one.one &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:03:41.050641 IP 1.1.1.2 &gt; one.one.one.one: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 1, length 64</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -l -i veth-blue</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on veth-blue, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">04:03:41.050600 ARP, Request who-has 1.1.1.2 tell 1.1.1.1, length 28</span><br><span class="line">04:03:41.050623 ARP, Reply 1.1.1.2 is-at 22:6a:f6:44:98:6b (oui Unknown), length 28</span><br><span class="line">04:03:41.050631 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:03:41.050640 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">04:03:42.053818 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">04:03:42.053850 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">04:03:43.056383 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 3, length 64</span><br><span class="line">04:03:43.056411 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 3, length 64</span><br><span class="line">04:03:44.060404 IP 1.1.1.1 &gt; 1.1.1.2: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 4, length 64</span><br><span class="line">04:03:44.060432 IP 1.1.1.2 &gt; 1.1.1.1: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 2299, <span class="built_in">seq</span> 4, length 64</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="arp-ping-테스트-후"><a href="#arp-ping-테스트-후" class="headerlink" title="arp (ping 테스트 후 )"></a>arp (ping 테스트 후 )</h3><ul>
+<li><p>ping test 후 arp 정보 확인</p>
+</li>
+<li><p>red</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip neigh show</span></span><br><span class="line">1.1.1.2 dev veth-red lladdr 22:6a:f6:44:98:6b STALE</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip neigh</span></span><br><span class="line">1.1.1.1 dev veth-blue lladdr 92:1f:c1:d7:4c:d0 STALE</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="bridge-fdb-show-ping-테스트-후"><a href="#bridge-fdb-show-ping-테스트-후" class="headerlink" title="bridge fdb show (ping 테스트 후 )"></a>bridge fdb show (ping 테스트 후 )</h3><ul>
+<li>ping 테스트 후에 fdb에 brd-red,  brd-blue에 mac주소가 남겨져음을 확인할 수 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line"></span><br><span class="line">92:1f:c1:d7:4c:d0 dev brd-red master brd0</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">22:6a:f6:44:98:6b dev brd-blue master brd0</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>red<ul>
+<li>mac주소 : link&#x2F;ether 92:1f:c1:d7:4c:d0 brd ff:ff:ff:ff:ff:ff link-netnsid 0</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">4: veth-red@if3: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 92:1f:c1:d7:4c:d0 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 1.1.1.1/24 scope global veth-red</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::901f:c1ff:fed7:4cd0/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>blue<ul>
+<li>Mac주소 :  link&#x2F;ether 22:6a:f6:44:98:6b brd ff:ff:ff:ff:ff:ff link-netnsid 0</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK&gt; mtu 65536 qdisc noop state DOWN group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">6: veth-blue@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/ether 22:6a:f6:44:98:6b brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet 1.1.1.2/24 scope global veth-blue</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::206a:f6ff:fe44:986b/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:20:35.000Z" title="2024. 8. 31. 오후 7:20:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">7 minutes read (About 985 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/bridge-to-internet/">bridge to internet</a></h1><div class="content"><h2 id="1-bridge-구성"><a href="#1-bridge-구성" class="headerlink" title="1. bridge 구성"></a>1. bridge 구성</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># add red namespace, virtual ethenet, bridge</span></span><br><span class="line">ip netns add red</span><br><span class="line">ip <span class="built_in">link</span> add veth-red <span class="built_in">type</span> veth peer name brd-red</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> veth-red netns red</span><br><span class="line"></span><br><span class="line"><span class="comment"># add blue namespace, virtual ethenet, bridge</span></span><br><span class="line">ip netns add blue</span><br><span class="line">ip <span class="built_in">link</span> add veth-blue <span class="built_in">type</span> veth peer name brd-blue</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> veth-blue netns blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># bridge를 추가하고, namesapce에 연결된 bridge선과 연결한다.</span></span><br><span class="line">ip <span class="built_in">link</span> add brd0 <span class="built_in">type</span> bridge</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-red master brd0</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-blue master brd0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 각 namespace의 virtual ethenet 에 ip를 할당.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip addr add 7.7.7.2/24 dev veth-red</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip addr add 7.7.7.3/24 dev veth-blue</span><br><span class="line"></span><br><span class="line"><span class="comment"># 모든 스위치를 켜준다.</span></span><br><span class="line">ip netns <span class="built_in">exec</span> red ip <span class="built_in">link</span> <span class="built_in">set</span> veth-red up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-red up</span><br><span class="line">ip netns <span class="built_in">exec</span> blue ip <span class="built_in">link</span> <span class="built_in">set</span> veth-blue up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd-blue up</span><br><span class="line">ip <span class="built_in">link</span> <span class="built_in">set</span> brd0 up</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="2-host-ip에서-red-ns로-ping-통신"><a href="#2-host-ip에서-red-ns로-ping-통신" class="headerlink" title="2. host ip에서 red ns로 ping 통신"></a>2. host ip에서 red ns로 ping 통신</h2><h3 id="host"><a href="#host" class="headerlink" title="host"></a>host</h3><ul>
+<li>통신실패</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ ping 7.7.7.2</span><br><span class="line">PING 7.7.7.2 (7.7.7.2) 56(84) bytes of data.</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>red 에서 패킷을 확인해보자.</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"># 아무런 반응이 없다.</span><br><span class="line">root@seongtki:~# tcpdump -li any</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on any, link-type LINUX_SLL (Linux cooked), capture size 262144 bytes</span><br></pre></td></tr></table></figure>
+
+
+</li>
+<li><p>요청한 ip는 라우터에 없는 정보이다. 그래서 brd0에 접근할 수 있도록 route 정보를 추가해 보자.</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ip addr add 7.7.7.1/24 dev brd0 <span class="comment"># 7.7.7.1 는 brd0 ip</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>route  table에 추가됨.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">default via 10.0.2.2 dev enp0s3 proto dhcp src 10.0.2.15 metric 100</span><br><span class="line">7.7.7.0/24 dev brd0 proto kernel scope <span class="built_in">link</span> src 7.7.7.1</span><br><span class="line">10.0.2.0/24 dev enp0s3 proto kernel scope <span class="built_in">link</span> src 10.0.2.15</span><br><span class="line">10.0.2.2 dev enp0s3 proto dhcp scope <span class="built_in">link</span> src 10.0.2.15 metric 100</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>통신성공</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 7.7.7.2</span></span><br><span class="line">PING 7.7.7.2 (7.7.7.2) 56(84) bytes of data.</span><br><span class="line">64 bytes from 7.7.7.2: icmp_seq=1 ttl=64 time=0.062 ms</span><br><span class="line">64 bytes from 7.7.7.2: icmp_seq=2 ttl=64 time=0.053 ms</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="red"><a href="#red" class="headerlink" title="red"></a>red</h3><ul>
+<li>arp 정보에 brd0 (7.7.7.1) 추가를 확인.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># red</span></span><br><span class="line">$ arp</span><br><span class="line">Address                  HWtype  HWaddress           Flags Mask            Iface</span><br><span class="line">7.7.7.1                  ether   5e:09:1c:5e:67:29   C                     veth-red</span><br><span class="line">7.7.7.3                  ether   52:13:d2:7c:86:d1   C                     veth-red</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="3-red-ns의-ip에서-host의-brd0-로-ping-통신"><a href="#3-red-ns의-ip에서-host의-brd0-로-ping-통신" class="headerlink" title="3. red ns의 ip에서 host의 brd0 로 ping 통신"></a>3. red ns의 ip에서 host의 brd0 로 ping 통신</h2><h3 id="red-1"><a href="#red-1" class="headerlink" title="red"></a>red</h3><ul>
+<li>통신성공. (물리적으로 연결해놓았으니 가능.)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# ping 7.7.7.1</span><br><span class="line">PING 7.7.7.1 (7.7.7.1) 56(84) bytes of data.</span><br><span class="line">64 bytes from 7.7.7.1: icmp_seq=1 ttl=64 time=0.033 ms</span><br><span class="line">64 bytes from 7.7.7.1: icmp_seq=2 ttl=64 time=0.075 ms</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="4-red-ns의-ip에서-host-ip로-ping-통신"><a href="#4-red-ns의-ip에서-host-ip로-ping-통신" class="headerlink" title="4. red ns의 ip에서  host ip로 ping 통신"></a>4. red ns의 ip에서  host ip로 ping 통신</h2><h3 id="red-2"><a href="#red-2" class="headerlink" title="red"></a>red</h3><ul>
+<li>통신 실패</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 10.0.2.15</span></span><br><span class="line">connect: Network is unreachable</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>요청한 ip는 2계층에 없었고, route table에도 매핑정보가 없다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">7.7.7.0/24 dev veth-red proto kernel scope <span class="built_in">link</span> src 7.7.7.2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>아래와 같이 brd0 로 이동하라고 매핑을 추가한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ ip route add default via 7.7.7.1</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>route table 확인</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">default via 7.7.7.1 dev veth-red</span><br><span class="line">7.7.7.0/24 dev veth-red proto kernel scope <span class="built_in">link</span> src 7.7.7.2</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>통신성공</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 10.0.2.15</span></span><br><span class="line">PING 10.0.2.15 (10.0.2.15) 56(84) bytes of data.</span><br><span class="line">64 bytes from 10.0.2.15: icmp_seq=1 ttl=64 time=0.029 ms</span><br><span class="line">64 bytes from 10.0.2.15: icmp_seq=2 ttl=64 time=0.055 ms</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="5-red-ns의-ip에서-구글-ip로-ping-통신"><a href="#5-red-ns의-ip에서-구글-ip로-ping-통신" class="headerlink" title="5. red ns의 ip에서 구글 ip로 ping 통신"></a>5. red ns의 ip에서 구글 ip로 ping 통신</h2><h3 id="red-3"><a href="#red-3" class="headerlink" title="red"></a>red</h3><ul>
+<li>구글로 통신 실패</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 8.8.8.8</span></span><br><span class="line">PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.</span><br><span class="line"></span><br><span class="line">--- 8.8.8.8 ping statistics ---</span><br><span class="line">3 packets transmitted, 0 received, 100% packet loss, time 2032ms</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><p>host에서 brd0의 패킷을 보자.</p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# tcpdump -li brd0</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on brd0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">05:14:50.472549 IP 7.7.7.2 &gt; dns.google: ICMP echo request, id 2255, seq 1, length 64</span><br><span class="line">05:14:51.482030 IP 7.7.7.2 &gt; dns.google: ICMP echo request, id 2255, seq 2, length 64</span><br><span class="line">05:14:52.504940 IP 7.7.7.2 &gt; dns.google: ICMP echo request, id 2255, seq 3, length 64</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>여기서는 구글로 요청을 계속 하고 있다. (응답x)</li>
+</ul>
+</li>
+</ul>
+<h3 id="POSTROUTING"><a href="#POSTROUTING" class="headerlink" title="POSTROUTING"></a>POSTROUTING</h3><ul>
+<li>라우팅 outbound, 포워딩 트래픽에 의해 트리거되는 netfilter hook</li>
+<li>nat(table) : NAT 대상 패킷의 출발지 혹은 목적지 address 수정방법을 결정 -&gt; POSTROUTING 에서는 SNAT(Source NAT)</li>
+<li>패킷이 network로 direct access가 불가능 할 때 사용한다.</li>
+<li>내부망 아이피인 7.7.7.0 를 host ip 10.0.2.15 로 둔갑시켜 준다. (NAT)</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ iptables -t nat -A POSTROUTING -s 7.7.7.0/24 -j MASQUERADE</span><br><span class="line">$ iptables -t nat -L</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>외부(src) -&gt; 외부(dst) 통신일 경우, FORWARD 가 트리거 되는데,</li>
+<li>외부에서 7.7.7.0으로 오는 경우에도 접근을 허용하도록 룰을 추가하자.</li>
+<li>반대로 7.7.7.0 에서 출발할 때에도 룰을 추가해야 한다. ( $ iptables -t filter -A FORWARD -s 7.7.7.0&#x2F;24 -j ACCEPT )</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">iptables -t filter -A FORWARD -d 7.7.7.0/24 -j ACCEPT</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># iptables -t filter -L</span></span><br><span class="line">Chain INPUT (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination</span><br><span class="line"></span><br><span class="line">Chain FORWARD (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination</span><br><span class="line">ACCEPT     all  --  anywhere             7.7.7.0/24 <span class="comment"># add</span></span><br><span class="line"></span><br><span class="line">Chain OUTPUT (policy ACCEPT)</span><br><span class="line">target     prot opt <span class="built_in">source</span>               destination</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="IP-Forwarding-routing"><a href="#IP-Forwarding-routing" class="headerlink" title="IP Forwarding (routing)"></a>IP Forwarding (routing)</h3><ul>
+<li>커널의 IP Forwarding (routing) 기능 켜기</li>
+<li>1: on, 0: off</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> 1 -n &gt;  /proc/sys/net/ipv4/ip_forward</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>통신 확인</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ping 8.8.8.8</span></span><br><span class="line">PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.</span><br><span class="line">64 bytes from 8.8.8.8: icmp_seq=1 ttl=61 time=46.7 ms</span><br><span class="line">64 bytes from 8.8.8.8: icmp_seq=2 ttl=61 time=59.9 ms</span><br><span class="line">64 bytes from 8.8.8.8: icmp_seq=3 ttl=61 time=35.7 ms</span><br><span class="line">64 bytes from 8.8.8.8: icmp_seq=4 ttl=61 time=50.2 ms</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/img/internet-01.png"></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T10:10:35.000Z" title="2024. 8. 31. 오후 7:10:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.967Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">10 minutes read (About 1437 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/docker-to-internet/">docker to internet</a></h1><div class="content"><ul>
+<li>docker 내부 컨테이너를 외부망에 ping 테스트 해보자.</li>
+<li>bridge to internet 과 비교해보자</li>
+</ul>
+<h2 id="docker-container-생성"><a href="#docker-container-생성" class="headerlink" title="docker container 생성"></a>docker container 생성</h2><h3 id="docker-bridge"><a href="#docker-bridge" class="headerlink" title="docker bridge"></a>docker bridge</h3><ul>
+<li>namespace테스트할 때 생성했던  bridge가 여기도 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker network ls</span></span><br><span class="line">NETWORK ID     NAME      DRIVER    SCOPE</span><br><span class="line">e9f8463dc960   bridge    bridge    <span class="built_in">local</span></span><br><span class="line">ba45e28be887   host      host      <span class="built_in">local</span></span><br><span class="line">bfe581bee6a5   none      null      <span class="built_in">local</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li><p>“Driver”: “bridge” </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&quot;Subnet&quot;: &quot;172.17.0.0/16&quot;,</span><br><span class="line">&quot;Gateway&quot;: &quot;172.17.0.1&quot;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker inspect bridge</span></span><br><span class="line">[</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;Name&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Id&quot;</span>: <span class="string">&quot;e9f8463dc96066a997b68404d6b87803c070795fe9ef89acbde59685d50e9659&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Created&quot;</span>: <span class="string">&quot;2023-09-22T23:54:48.214177336Z&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Scope&quot;</span>: <span class="string">&quot;local&quot;</span>,</span><br><span class="line">        <span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;bridge&quot;</span>,</span><br><span class="line">        <span class="string">&quot;EnableIPv6&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;IPAM&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;Driver&quot;</span>: <span class="string">&quot;default&quot;</span>,</span><br><span class="line">            <span class="string">&quot;Options&quot;</span>: null,</span><br><span class="line">            <span class="string">&quot;Config&quot;</span>: [</span><br><span class="line">                &#123;</span><br><span class="line">                    <span class="string">&quot;Subnet&quot;</span>: <span class="string">&quot;172.17.0.0/16&quot;</span>,</span><br><span class="line">                    <span class="string">&quot;Gateway&quot;</span>: <span class="string">&quot;172.17.0.1&quot;</span></span><br><span class="line">                &#125;</span><br><span class="line">            ]</span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;Internal&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;Attachable&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;Ingress&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;ConfigFrom&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;Network&quot;</span>: <span class="string">&quot;&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;ConfigOnly&quot;</span>: <span class="literal">false</span>,</span><br><span class="line">        <span class="string">&quot;Containers&quot;</span>: &#123;&#125;,</span><br><span class="line">        <span class="string">&quot;Options&quot;</span>: &#123;</span><br><span class="line">            <span class="string">&quot;com.docker.network.bridge.default_bridge&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.network.bridge.enable_icc&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.network.bridge.enable_ip_masquerade&quot;</span>: <span class="string">&quot;true&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.network.bridge.host_binding_ipv4&quot;</span>: <span class="string">&quot;0.0.0.0&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.network.bridge.name&quot;</span>: <span class="string">&quot;docker0&quot;</span>,</span><br><span class="line">            <span class="string">&quot;com.docker.network.driver.mtu&quot;</span>: <span class="string">&quot;1500&quot;</span></span><br><span class="line">        &#125;,</span><br><span class="line">        <span class="string">&quot;Labels&quot;</span>: &#123;&#125;</span><br><span class="line">    &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="docker0-는-이전에-생성했던-brd0-와-비슷한-모양이다"><a href="#docker0-는-이전에-생성했던-brd0-와-비슷한-모양이다" class="headerlink" title="docker0 는 이전에 생성했던 brd0 와 비슷한 모양이다."></a>docker0 는 이전에 생성했던 brd0 와 비슷한 모양이다.</h3><ul>
+<li>여긴 state DOWN 인데 왜인지는 잘 모름 (내가 생성했던 bridge 는 up 해주어서 state UP 였다 )</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip addr show</span></span><br><span class="line">3: docker0: &lt;NO-CARRIER,BROADCAST,MULTICAST,UP&gt; mtu 1500 qdisc noqueue state DOWN group default</span><br><span class="line">    <span class="built_in">link</span>/ether 02:42:75:07:2a:20 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="brctl-ethenet-bridge-administration"><a href="#brctl-ethenet-bridge-administration" class="headerlink" title="brctl (ethenet bridge administration)"></a>brctl (ethenet bridge administration)</h3><ul>
+<li>아직 연결된 인터페이스가 없다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># brctl show</span></span><br><span class="line">bridge name	bridge <span class="built_in">id</span>		STP enabled	interfaces</span><br><span class="line">docker0		8000.024275072a20	no</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="red-container-생성"><a href="#red-container-생성" class="headerlink" title="red container 생성"></a>red container 생성</h3><ul>
+<li>namespace 라고 봐도 된다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=red busybox</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="blue-container-생성"><a href="#blue-container-생성" class="headerlink" title="blue container 생성"></a>blue container 생성</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker run -it --name=blue busybox</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="컨테이너-조회"><a href="#컨테이너-조회" class="headerlink" title="컨테이너 조회"></a>컨테이너 조회</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker ps</span></span><br><span class="line">CONTAINER ID   IMAGE     COMMAND   CREATED          STATUS          PORTS     NAMES</span><br><span class="line">dad7b7094a48   busybox   <span class="string">&quot;sh&quot;</span>      5 seconds ago    Up 5 seconds              blue</span><br><span class="line">83f83cfc4b9b   busybox   <span class="string">&quot;sh&quot;</span>      53 seconds ago   Up 53 seconds             red</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="virtual-ethenet-peer"><a href="#virtual-ethenet-peer" class="headerlink" title="virtual ethenet peer"></a>virtual ethenet peer</h2><h3 id="host"><a href="#host" class="headerlink" title="host"></a>host</h3><ul>
+<li>5: veth6008cec@if4 (red container)</li>
+<li>7: veth02ce233@if6 (blue container)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip a</span></span><br><span class="line">3: docker0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue state UP group default</span><br><span class="line">    <span class="built_in">link</span>/ether 02:42:75:07:2a:20 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.1/16 brd 172.17.255.255 scope global docker0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">    inet6 fe80::42:75ff:fe07:2a20/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">5: veth6008cec@if4: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP group default</span><br><span class="line">    <span class="built_in">link</span>/ether 8a:a2:28:<span class="built_in">fc</span>:88:58 brd ff:ff:ff:ff:ff:ff link-netnsid 0</span><br><span class="line">    inet6 fe80::88a2:28ff:fefc:8858/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">7: veth02ce233@if6: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc noqueue master docker0 state UP group default</span><br><span class="line">    <span class="built_in">link</span>/ether d2:97:cf:02:30:01 brd ff:ff:ff:ff:ff:ff link-netnsid 1</span><br><span class="line">    inet6 fe80::d097:cfff:fe02:3001/64 scope <span class="built_in">link</span></span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>interface가 생성되었다</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># brctl show</span></span><br><span class="line">bridge 		name	bridge <span class="built_in">id</span>					STP enabled		interfaces</span><br><span class="line">docker0					8000.024275072a20	no						veth02ce233</span><br><span class="line">																								veth6008cec</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="red-container"><a href="#red-container" class="headerlink" title="red container"></a>red container</h3><ul>
+<li>4: eth0@if5:</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ip a</span></span><br><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">4: eth0@if5: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue</span><br><span class="line">    <span class="built_in">link</span>/ether 02:42:ac:11:00:02 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.2/16 brd 172.17.255.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="blue-container"><a href="#blue-container" class="headerlink" title="blue container"></a>blue container</h3><ul>
+<li>6: eth0@if7</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 65536 qdisc noqueue qlen 1000</span><br><span class="line">    <span class="built_in">link</span>/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00</span><br><span class="line">    inet 127.0.0.1/8 scope host lo</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br><span class="line">6: eth0@if7: &lt;BROADCAST,MULTICAST,UP,LOWER_UP,M-DOWN&gt; mtu 1500 qdisc noqueue</span><br><span class="line">    <span class="built_in">link</span>/ether 02:42:ac:11:00:03 brd ff:ff:ff:ff:ff:ff</span><br><span class="line">    inet 172.17.0.3/16 brd 172.17.255.255 scope global eth0</span><br><span class="line">       valid_lft forever preferred_lft forever</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="컨테이너-간-통신"><a href="#컨테이너-간-통신" class="headerlink" title="컨테이너 간 통신"></a>컨테이너 간 통신</h2><h3 id="red-container-1"><a href="#red-container-1" class="headerlink" title="red container"></a>red container</h3><ul>
+<li>blue container 로 통신 성공</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">/ <span class="comment"># ping 172.17.0.3</span></span><br><span class="line">PING 172.17.0.3 (172.17.0.3): 56 data bytes</span><br><span class="line">64 bytes from 172.17.0.3: <span class="built_in">seq</span>=0 ttl=64 time=0.610 ms</span><br><span class="line">64 bytes from 172.17.0.3: <span class="built_in">seq</span>=1 ttl=64 time=0.376 ms</span><br><span class="line">64 bytes from 172.17.0.3: <span class="built_in">seq</span>=2 ttl=64 time=0.446 ms</span><br><span class="line">64 bytes from 172.17.0.3: <span class="built_in">seq</span>=3 ttl=64 time=0.304 ms</span><br><span class="line">64 bytes from 172.17.0.3: <span class="built_in">seq</span>=4 ttl=64 time=0.314 ms</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="host-bridge"><a href="#host-bridge" class="headerlink" title="host - bridge"></a>host - bridge</h3><ul>
+<li>docker0 를 통해 ARP, ICMP 통신이 잘 됨을 확인.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# tcpdump -li docker0</span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span><br><span class="line">listening on docker0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">00:51:13.636954 ARP, Request who-has 172.17.0.3 tell 172.17.0.2, length 28</span><br><span class="line">00:51:13.637063 ARP, Reply 172.17.0.3 is-at 02:42:ac:11:00:03 (oui Unknown), length 28</span><br><span class="line">00:51:13.637072 IP 172.17.0.2 &gt; 172.17.0.3: ICMP echo request, id 9, seq 0, length 64</span><br><span class="line">00:51:13.637310 IP 172.17.0.3 &gt; 172.17.0.2: ICMP echo reply, id 9, seq 0, length 64</span><br><span class="line">00:51:14.638927 IP 172.17.0.2 &gt; 172.17.0.3: ICMP echo request, id 9, seq 1, length 64</span><br><span class="line">00:51:14.639126 IP 172.17.0.3 &gt; 172.17.0.2: ICMP echo reply, id 9, seq 1, length 64</span><br><span class="line">00:51:15.640112 IP 172.17.0.2 &gt; 172.17.0.3: ICMP echo request, id 9, seq 2, length 64</span><br><span class="line">00:51:15.640283 IP 172.17.0.3 &gt; 172.17.0.2: ICMP echo reply, id 9, seq 2, length 64</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="red-amp-blue"><a href="#red-amp-blue" class="headerlink" title="red &amp; blue"></a>red &amp; blue</h3><ul>
+<li>arp 조회</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># red</span></span><br><span class="line">/ <span class="comment"># ip neigh show</span></span><br><span class="line">172.17.0.3 dev eth0 lladdr 02:42:ac:11:00:03 used 0/0/0 probes 4 STALE</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># blue</span></span><br><span class="line">/ <span class="comment"># ip neigh show</span></span><br><span class="line">172.17.0.2 dev eth0 lladdr 02:42:ac:11:00:02 ref 1 used 0/0/0 probes 1 REACHABLE</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="외부망-통신"><a href="#외부망-통신" class="headerlink" title="외부망 통신"></a>외부망 통신</h2><h3 id="route-host"><a href="#route-host" class="headerlink" title="route: host"></a>route: host</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ip route</span></span><br><span class="line">default via 192.168.64.1 dev enp0s1 proto dhcp src 192.168.64.27 metric 100</span><br><span class="line">172.17.0.0/16 dev docker0 proto kernel scope <span class="built_in">link</span> src 172.17.0.1</span><br><span class="line">192.168.64.0/24 dev enp0s1 proto kernel scope <span class="built_in">link</span> src 192.168.64.27</span><br><span class="line">192.168.64.1 dev enp0s1 proto dhcp scope <span class="built_in">link</span> src 192.168.64.27 metric 100</span><br><span class="line">root@seongtki:~<span class="comment"># route -n</span></span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">0.0.0.0         192.168.64.1    0.0.0.0         UG    100    0        0 enp0s1</span><br><span class="line">172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 docker0</span><br><span class="line">192.168.64.0    0.0.0.0         255.255.255.0   U     0      0        0 enp0s1</span><br><span class="line">192.168.64.1    0.0.0.0         255.255.255.255 UH    100    0        0 enp0s1</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="route-red-container"><a href="#route-red-container" class="headerlink" title="route: red container"></a>route: red container</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">/ <span class="comment"># ip route</span></span><br><span class="line">default via 172.17.0.1 dev eth0</span><br><span class="line">172.17.0.0/16 dev eth0 scope <span class="built_in">link</span>  src 172.17.0.2</span><br><span class="line">/ <span class="comment"># route -n</span></span><br><span class="line">Kernel IP routing table</span><br><span class="line">Destination     Gateway         Genmask         Flags Metric Ref    Use Iface</span><br><span class="line">0.0.0.0         172.17.0.1      0.0.0.0         UG    0      0        0 eth0</span><br><span class="line">172.17.0.0      0.0.0.0         255.255.0.0     U     0      0        0 eth0</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="iptables-host"><a href="#iptables-host" class="headerlink" title="iptables: host"></a>iptables: host</h3><ul>
+<li><p>filter의 FORWARD 정책이 DROP임을 확인.</p>
+</li>
+<li><p>-A FORWARD -i docker0 ! -o docker0 -j ACCEPT<br>-A FORWARD -i docker0 -o docker0 -j ACCEPT</p>
+<ul>
+<li>docker0을 통과하는 FORWARD 를 모두 ACCEPT한다.<ul>
+<li>도커 컨테이너간의 통신 가능</li>
+<li>외부에서 도커컨테이너로 통신 가능.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># iptables -t filter -S</span></span><br><span class="line">-P INPUT ACCEPT</span><br><span class="line">-P FORWARD DROP</span><br><span class="line">-P OUTPUT ACCEPT</span><br><span class="line">-N DOCKER</span><br><span class="line">-N DOCKER-ISOLATION-STAGE-1</span><br><span class="line">-N DOCKER-ISOLATION-STAGE-2</span><br><span class="line">-N DOCKER-USER</span><br><span class="line">-A FORWARD -j DOCKER-USER</span><br><span class="line">-A FORWARD -j DOCKER-ISOLATION-STAGE-1</span><br><span class="line">-A FORWARD -o docker0 -m conntrack --ctstate RELATED,ESTABLISHED -j ACCEPT</span><br><span class="line">-A FORWARD -o docker0 -j DOCKER</span><br><span class="line">-A FORWARD -i docker0 ! -o docker0 -j ACCEPT</span><br><span class="line">-A FORWARD -i docker0 -o docker0 -j ACCEPT</span><br><span class="line">-A DOCKER-ISOLATION-STAGE-1 -i docker0 ! -o docker0 -j DOCKER-ISOLATION-STAGE-2</span><br><span class="line">-A DOCKER-ISOLATION-STAGE-1 -j RETURN</span><br><span class="line">-A DOCKER-ISOLATION-STAGE-2 -o docker0 -j DROP</span><br><span class="line">-A DOCKER-ISOLATION-STAGE-2 -j RETURN</span><br><span class="line">-A DOCKER-USER -j RETURN</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>nat 의 기본 polick (PREROUTING, INPUT, OUTPUT, POSTROUTING) 가 모두  ACCEPT 임을 확인.</li>
+<li>-A POSTROUTING -s 172.17.0.0&#x2F;16 ! -o docker0 -j MASQUERADE<ul>
+<li>src가 172.17.0.0 대역이고 out interface가 docker0 가 아니면 MASQUERADE 설정 (SNAT)<ul>
+<li>도커 컨테이너(namespace) -&gt; 외부망 통신이 가능.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># iptables -t nat -S</span></span><br><span class="line">-P PREROUTING ACCEPT</span><br><span class="line">-P INPUT ACCEPT</span><br><span class="line">-P OUTPUT ACCEPT</span><br><span class="line">-P POSTROUTING ACCEPT</span><br><span class="line">-N DOCKER</span><br><span class="line">-A PREROUTING -m addrtype --dst-type LOCAL -j DOCKER</span><br><span class="line">-A OUTPUT ! -d 127.0.0.0/8 -m addrtype --dst-type LOCAL -j DOCKER</span><br><span class="line">-A POSTROUTING -s 172.17.0.0/16 ! -o docker0 -j MASQUERADE</span><br><span class="line">-A DOCKER -i docker0 -j RETURN</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="red"><a href="#red" class="headerlink" title="red"></a>red</h3><ul>
+<li>통신성공</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">/ <span class="comment"># ping 8.8.8.8</span></span><br><span class="line">PING 8.8.8.8 (8.8.8.8): 56 data bytes</span><br><span class="line">64 bytes from 8.8.8.8: <span class="built_in">seq</span>=0 ttl=114 time=43.324 ms</span><br><span class="line">64 bytes from 8.8.8.8: <span class="built_in">seq</span>=1 ttl=114 time=44.720 ms</span><br><span class="line">64 bytes from 8.8.8.8: <span class="built_in">seq</span>=2 ttl=114 time=42.764 ms</span><br><span class="line">64 bytes from 8.8.8.8: <span class="built_in">seq</span>=3 ttl=114 time=36.548 ms</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="host-bridge-1"><a href="#host-bridge-1" class="headerlink" title="host - bridge"></a>host - bridge</h3><ul>
+<li>docker0 를 경유해서 ARP, ICMP 통신을 하고 있음을 확인.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># tcpdump -li docker0</span></span><br><span class="line">tcpdump: verbose output suppressed, use -v or -vv <span class="keyword">for</span> full protocol decode</span><br><span class="line">listening on docker0, link-type EN10MB (Ethernet), capture size 262144 bytes</span><br><span class="line">01:27:53.570746 IP 172.17.0.3 &gt; dns.google: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 0, length 64</span><br><span class="line">01:27:53.613814 IP dns.google &gt; 172.17.0.3: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 0, length 64</span><br><span class="line">01:27:54.575544 IP 172.17.0.3 &gt; dns.google: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">01:27:54.619839 IP dns.google &gt; 172.17.0.3: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 1, length 64</span><br><span class="line">01:27:55.577202 IP 172.17.0.3 &gt; dns.google: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">01:27:55.619712 IP dns.google &gt; 172.17.0.3: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 2, length 64</span><br><span class="line">01:27:56.578531 IP 172.17.0.3 &gt; dns.google: ICMP <span class="built_in">echo</span> request, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 3, length 64</span><br><span class="line">01:27:56.614834 IP dns.google &gt; 172.17.0.3: ICMP <span class="built_in">echo</span> reply, <span class="built_in">id</span> 8, <span class="built_in">seq</span> 3, length 64</span><br><span class="line">01:27:58.816367 ARP, Request who-has 172.17.0.3 tell seongtki, length 28</span><br><span class="line">01:27:58.817088 ARP, Reply 172.17.0.3 is-at 02:42:ac:11:00:03 (oui Unknown), length 28</span><br><span class="line">01:27:58.817310 ARP, Request who-has seongtki tell 172.17.0.3, length 28</span><br><span class="line">01:27:58.817354 ARP, Reply seongtki is-at 02:42:75:07:2a:20 (oui Unknown), length 28</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="구조도"><a href="#구조도" class="headerlink" title="구조도"></a>구조도</h2><ul>
+<li>이상 도커 컨테이너에서의 실습한 통신에 대한 구조도이다.</li>
+<li>이전에 bridge &lt;-&gt; internet 통신과 비슷한 모양의 구조임을 알 수 있다.</li>
+</ul>
+<p><img src="/blog/img/internet-02.png"></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T09:55:35.000Z" title="2024. 8. 31. 오후 6:55:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.968Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">6 minutes read (About 956 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/pid-namespace/">pid namespace</a></h1><div class="content"><ul>
+<li>Process ID 넘버스페이스를 isolate 한다.</li>
+<li>부모,자식 네임스페이스 중첩구조</li>
+<li>부모 네임스페이스 (see) -&gt; 자식 네임스페이스</li>
+</ul>
+<h3 id="host-pid-1"><a href="#host-pid-1" class="headerlink" title="host pid 1"></a>host pid 1</h3><ul>
+<li>init 프로세스 (커널이 생성해준다)</li>
+<li>시그널 처리</li>
+<li>좀비, 고아프로세스 처리</li>
+<li>kill 1 되면, 시스템 패닉되어 reboot해야함</li>
+</ul>
+<h3 id="컨테이너-pid-1"><a href="#컨테이너-pid-1" class="headerlink" title="컨테이너 pid 1"></a>컨테이너 pid 1</h3><ul>
+<li>unshare 할 때 fork 하여 자식 pid namespace의 pid 1 로 실행</li>
+<li>시그널 처리</li>
+<li>좀비, 고아프로세스 처리</li>
+<li>죽으면 컨테이너가 종료됨</li>
+</ul>
+<h3 id="unshare"><a href="#unshare" class="headerlink" title="unshare"></a>unshare</h3><ul>
+<li>-p : pid namespace</li>
+<li>-f : fork</li>
+<li>–mount-proc : proc 파일시스템 마운트</li>
+</ul>
+<h3 id="x2F-proc"><a href="#x2F-proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h3><ul>
+<li>메모리 기반의 가상파일 시스템<ul>
+<li>pseudo filesystem (memory based virtual filesystem)</li>
+</ul>
+</li>
+<li>커널이 관리하는 시스템 정보를 제공</li>
+<li>시스템 모니터링과 분석에 활용</li>
+<li>커널 데이터 구조의 접근을 쉽게 할 수 있음</li>
+<li>ps, mount ,umount 할 때 &#x2F;proc 파일시스템을 통해서 명령어가 실행됨.</li>
+<li>컨테이너 (pid namespace) 안에서 프로세스 정보를 조회하고 제어하기 위해 사용한다.</li>
+</ul>
+<h3 id="예제"><a href="#예제" class="headerlink" title="예제"></a>예제</h3><ul>
+<li>fork하면서 pid namespace 로 격리함</li>
+<li>proc 파일시스템을 마운트 하지 않으면 proc 정보가 보임</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># unshare -fp --mount-proc /bin/sh</span></span><br><span class="line">\<span class="comment">#</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>컨테이너<ul>
+<li>pid 1은 &#x2F;bin&#x2F;sh이다.</li>
+<li>namespace inode 조회.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 컨테이너</span></span><br><span class="line"><span class="comment"># ps -ef</span></span><br><span class="line">UID          PID    PPID  C STIME TTY          TIME CMD</span><br><span class="line">root           1       0  0 04:41 pts/0    00:00:00 /bin/sh</span><br><span class="line">root           2       1  0 04:42 pts/0    00:00:00 ps -ef</span><br><span class="line"></span><br><span class="line"><span class="comment"># lsns -t pid -p 1</span></span><br><span class="line">        NS TYPE NPROCS PID USER COMMAND</span><br><span class="line">4026532398 pid       2   1 root /bin/sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="host"><a href="#host" class="headerlink" title="host"></a>host</h3><ul>
+<li>pid 1은 &#x2F;sbin&#x2F;init 이다. (컨테이너와 다름)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps -ef</span></span><br><span class="line">UID          PID    PPID  C STIME TTY          TIME CMD</span><br><span class="line">root           1       0  0 03:21 ?        00:00:01 /sbin/init</span><br><span class="line">root           2       0  0 03:21 ?        00:00:00 [kthreadd]</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>unshare명령에 대한 프로세스의 자식에 &#x2F;bin&#x2F;sh 가 있다. </li>
+<li>&#x2F;bin&#x2F;sh의 inode 를 조회해 보면, 컨테이너의 pid 1의 inode와 같음을 알 수 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps -ef | grep /bin/sh</span></span><br><span class="line">root       15787   15768  0 04:41 pts/0    00:00:00 unshare -fp --mount-proc /bin/sh</span><br><span class="line">root       15788   15787  0 04:41 pts/0    00:00:00 /bin/sh</span><br><span class="line">root       15952   15938  0 04:43 pts/2    00:00:00 grep --color=auto /bin/sh</span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># lsns -t pid -p 15788</span></span><br><span class="line">        NS TYPE NPROCS   PID USER COMMAND</span><br><span class="line">4026532398 pid       1 15788 root /bin/sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>위 예제의 pid namespace 구조도는 아래와 같다.</li>
+</ul>
+<p><img src="/blog/img/pid-01.png"></p>
+<h2 id="signal-handler"><a href="#signal-handler" class="headerlink" title="signal handler"></a>signal handler</h2><h3 id="pid-namespace"><a href="#pid-namespace" class="headerlink" title="pid namespace"></a>pid namespace</h3><p>컨테이너의 pid 1을 SIGKILL 하면 컨테이너가 종료되는 것을 알 수 있다.</p>
+<ul>
+<li>컨테이너로 시그널을 보낼 때, 핸들링하는 프로그램 데몬이 존재해야 하지만, 없기 때문에 SIGKILL을 제외한 시그널을 무시된다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGINT 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 15788 # pid namespace 종료</span></span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="docker-pid"><a href="#docker-pid" class="headerlink" title="docker pid"></a>docker pid</h3><ul>
+<li>busybox 를 실행하고 sleep 3600 cmd 실행하도록 컨테이너를 생성하였다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker run --rm --name busybox busybox sleep 3600</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>host에서 sleep 3600 가 실행중인걸 알 수 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps aux | grep sleep</span></span><br><span class="line">root       16005  0.3  0.5 1326556 22572 pts/0   Sl+  05:20   0:00 docker run --<span class="built_in">rm</span> --name busybox busybox <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16067  0.0  0.0   3852   400 ?        Ss   05:20   0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16100  0.0  0.0   5968   668 pts/2    S+   05:20   0:00 grep --color=auto <span class="built_in">sleep</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>컨테이너 내부에서 pid1 은 cmd임을 알 수 있다.</li>
+<li>이는 시그널을 컨트롤하는 사용자 프로그램이 없다는 뜻이어서, kill을 제외한 다른 시그널에대한 핸들링이 없다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker exec busybox ps -ef</span></span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">    7 root      0:00 ps -ef</span><br><span class="line">    </span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 16067 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGINT 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 16067 # 컨테이너 종료</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="docker-init-process"><a href="#docker-init-process" class="headerlink" title="docker init process"></a>docker init process</h3><ul>
+<li>–init : docker 에서 제공하는 컨테이너 init process</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment">#  docker run --rm --name busybox --init busybox sleep 3600</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>cmd 인 sleep 3600 부모로 &#x2F;sbin&#x2F;docker-init이 존재하는걸 알수 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps aux | grep sleep</span></span><br><span class="line">root       16182  0.2  0.5 1326812 22972 pts/0   Sl+  05:22   0:00 docker run --<span class="built_in">rm</span> --name busybox --init busybox <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16230  0.0  0.0    812     4 ?        Ss   05:22   0:00 /sbin/docker-init -- <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16265  0.0  0.0   3852   412 ?        S    05:22   0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16267  0.0  0.0   5968   672 pts/2    S+   05:22   0:00 grep --color=auto <span class="built_in">sleep</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>컨테이너 내부의 ps역시 initprocess 자식으로 cmd가 존재한다.</li>
+<li>SIGHUP을 날렸을 때, docker-init 프로그램에서 시그널을 핸들링하여 컨테이너가 종료되는 걸 알 수 있다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker exec busybox ps -ef</span></span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 /sbin/docker-init -- <span class="built_in">sleep</span> 3600</span><br><span class="line">    6 root      0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">    7 root      0:00 ps -ef</span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 16230</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-08-31T09:50:35.000Z" title="2024. 8. 31. 오후 6:50:35">2024-08-31</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-09-21T22:20:08.968Z" title="2024. 9. 22. 오전 7:20:08">2024-09-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">8 minutes read (About 1229 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/08/31/docs/namespace/user-namespace/">user namespace</a></h1><div class="content"><ul>
 <li><p>프로세스의 UID&#x2F;GID Isolation</p>
 </li>
 <li><p>중첩(nested) 구조 (최대 32레벨)</p>
@@ -169,7 +874,7 @@
 
 
 <p><img src="/blog/img/user-01.png"></p>
-</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/blog/page/3/">Previous</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/blog/page/5/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/blog/">1</a></li><li><a class="pagination-link" href="/blog/page/2/">2</a></li><li><a class="pagination-link" href="/blog/page/3/">3</a></li><li><a class="pagination-link is-current" href="/blog/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">31</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">20</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gatewayapi/"><span class="level-start"><span class="level-item">gateway/gatewayapi</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gloo/"><span class="level-start"><span class="level-item">gateway/gloo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/ingress-ingress/"><span class="level-start"><span class="level-item">ingress/ingress</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs-install/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB-install/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-clusterip/"><span class="level-start"><span class="level-item">serivce/clusterip</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-install/"><span class="level-start"><span class="level-item">serivce/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-nodeport/"><span class="level-start"><span class="level-item">serivce/nodeport</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-12T17:30:35.000Z">2024-10-13</time></p><p class="title"><a href="/blog/2024/10/13/docs/ingress/ingress/">ingress</a></p><p class="categories"><a href="/blog/categories/ingress-ingress/">ingress/ingress</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-12T17:10:35.000Z">2024-10-13</time></p><p class="title"><a href="/blog/2024/10/13/docs/gateway/gloo/">gloo</a></p><p class="categories"><a href="/blog/categories/gateway-gloo/">gateway/gloo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-12T17:00:35.000Z">2024-10-13</time></p><p class="title"><a href="/blog/2024/10/13/docs/gateway/gateway-api/">gatewayapi</a></p><p class="categories"><a href="/blog/categories/gateway-gatewayapi/">gateway/gatewayapi</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-05T18:00:35.000Z">2024-10-06</time></p><p class="title"><a href="/blog/2024/10/06/docs/loadbalancer/ipvs-proxy/">ipvs-proxy</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-ipvs/">loadbaleancer/ipvs</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-05T17:30:35.000Z">2024-10-06</time></p><p class="title"><a href="/blog/2024/10/06/docs/loadbalancer/ipvs-install/">ipvs-install</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-ipvs-install/">loadbaleancer/ipvs-install</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous"><a href="/blog/page/3/">Previous</a></div><div class="pagination-next is-invisible is-hidden-mobile"><a href="/blog/page/5/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link" href="/blog/">1</a></li><li><a class="pagination-link" href="/blog/page/2/">2</a></li><li><a class="pagination-link" href="/blog/page/3/">3</a></li><li><a class="pagination-link is-current" href="/blog/page/4/">4</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">36</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">25</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gatewayapi/"><span class="level-start"><span class="level-item">gateway/gatewayapi</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gloo/"><span class="level-start"><span class="level-item">gateway/gloo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/ingress-ingress/"><span class="level-start"><span class="level-item">ingress/ingress</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-bookinfo/"><span class="level-start"><span class="level-item">istio/bookinfo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-envoy/"><span class="level-start"><span class="level-item">istio/envoy</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-outline/"><span class="level-start"><span class="level-item">istio/istio-outline</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-test/"><span class="level-start"><span class="level-item">istio/istio-test</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-traffic/"><span class="level-start"><span class="level-item">istio/istio-traffic</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs-install/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB-install/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-clusterip/"><span class="level-start"><span class="level-item">serivce/clusterip</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-install/"><span class="level-start"><span class="level-item">serivce/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-nodeport/"><span class="level-start"><span class="level-item">serivce/nodeport</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-19T19:30:35.000Z">2024-10-20</time></p><p class="title"><a href="/blog/2024/10/20/docs/istio/istio-traffic/">istio-traffic</a></p><p class="categories"><a href="/blog/categories/istio-istio-traffic/">istio/istio-traffic</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-19T18:30:35.000Z">2024-10-20</time></p><p class="title"><a href="/blog/2024/10/20/docs/istio/istio-install/">istio-test</a></p><p class="categories"><a href="/blog/categories/istio-istio-test/">istio/istio-test</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-19T18:00:35.000Z">2024-10-20</time></p><p class="title"><a href="/blog/2024/10/20/docs/istio/bookinfo/">bookinfo</a></p><p class="categories"><a href="/blog/categories/istio-bookinfo/">istio/bookinfo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-19T17:30:35.000Z">2024-10-20</time></p><p class="title"><a href="/blog/2024/10/20/docs/istio/envoy/">envoy</a></p><p class="categories"><a href="/blog/categories/istio-envoy/">istio/envoy</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-10-19T17:00:35.000Z">2024-10-20</time></p><p class="title"><a href="/blog/2024/10/20/docs/istio/outline/">istio-outline</a></p><p class="categories"><a href="/blog/categories/istio-istio-outline/">istio/istio-outline</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
