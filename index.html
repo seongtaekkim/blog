@@ -29,7 +29,347 @@
       switchTab();
       window.addEventListener('hashchange', switchTab, false);
   })();
-  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-22T08:30:35.000Z" title="2024. 12. 22. 오후 5:30:35">2024-12-22</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-22T10:37:37.918Z" title="2024. 12. 22. 오후 7:37:37">2024-12-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/loadbaleancer-metalLB/">loadbaleancer/metalLB</a></span><span class="level-item">25 minutes read (About 3726 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/22/docs/loadbalancer/metallb/">MetalLB</a></h1><div class="content"><h2 id="서비스-Service-LoadBalancer-Type-통신-흐름"><a href="#서비스-Service-LoadBalancer-Type-통신-흐름" class="headerlink" title="서비스(Service) LoadBalancer Type 통신 흐름"></a>서비스(Service) LoadBalancer Type 통신 흐름</h2><p>외부 클라이언트가 <code>로드밸런서</code> 접속 시 부하분산 되어 노드 도달 후 iptables 룰로 목적지 파드와 통신됨</p>
+  </script><!-- hexo injector head_end end --><meta name="generator" content="Hexo 6.3.0"></head><body class="is-2-column"><nav class="navbar navbar-main"><div class="container navbar-container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/blog/">Blog</a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item is-active" href="/blog/">Home</a><a class="navbar-item" href="/blog/archives">Archives</a><a class="navbar-item" href="/blog/categories">Categories</a><a class="navbar-item" href="/blog/tags">Tags</a></div><div class="navbar-end"><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-8-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-29T07:20:30.000Z" title="2024. 12. 29. 오후 4:20:30">2024-12-29</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-29T11:11:09.015Z" title="2024. 12. 29. 오후 8:11:09">2024-12-29</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-overlayFS/">container/overlayFS</a></span><span class="level-item">13 minutes read (About 1959 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/29/docs/overlayFS/container-layer-stack/">Container Layer Stack</a></h1><div class="content"><ul>
+<li><p>컨테이너 설치 시 이미지가 어떤 방식, 구조로 저장되는지 알아보자</p>
+</li>
+<li><p>도커 컨테이너 , 이미지 삭제</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\<span class="comment"># docker rm $(docker ps -a -q)</span></span><br><span class="line">\<span class="comment"># docker rmi -f $(docker images -q)</span></span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>docker pull nginx:latest</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># docker pull nginx:latest</span></span><br><span class="line">latest: Pulling from library/nginx</span><br><span class="line">e886f0f47ef5: Pull complete <span class="comment"># 배포id (distribution id)</span></span><br><span class="line">9a9138853e32: Pull complete</span><br><span class="line">598a42ec6587: Pull complete</span><br><span class="line">82e490cc2043: Pull complete</span><br><span class="line">948128637a91: Pull complete</span><br><span class="line">e4cad15ac3f6: Pull complete</span><br><span class="line">096332b242c2: Pull complete</span><br><span class="line">Digest: sha256:32da30332506740a2f7c34d5dc70467b7f14ec67d912703568daff790ab3f755</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> nginx:latest</span><br><span class="line">docker.io/library/nginx:latest</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>image id 확인</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># docker images</span></span><br><span class="line">REPOSITORY   TAG       IMAGE ID       CREATED      SIZE</span><br><span class="line">nginx        latest    2a4fbb36e966   9 days ago   192MB</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>layer id 확인 (image id 조회)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># docker image inspect 2a4fbb36e966 | jq &#x27;.[].RootFS&#x27;</span></span><br><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;Type&quot;</span>: <span class="string">&quot;layers&quot;</span>,</span><br><span class="line">  <span class="string">&quot;Layers&quot;</span>: [</span><br><span class="line">    <span class="string">&quot;sha256:311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73&quot;</span>, <span class="comment"># layer id</span></span><br><span class="line">    <span class="string">&quot;sha256:674ca5344f959090515e9eac79055d8630851b21bbd584ac32765315284c05c5&quot;</span>,</span><br><span class="line">    <span class="string">&quot;sha256:7f8881cae5296e2ef0103706a326235494b5f1dcd9ea960656165cf7643ddd47&quot;</span>,</span><br><span class="line">    <span class="string">&quot;sha256:f21128d548a5122f430a58f123deb9c8b80f70b9fc98df280a9619b7e38b6a32&quot;</span>,</span><br><span class="line">    <span class="string">&quot;sha256:dca0e6f80e8df5d85d45426101fefba3d41abe4fc90be994074066d4b135bef5&quot;</span>,</span><br><span class="line">    <span class="string">&quot;sha256:d9664e6da0f787fb8c04e80f1e731223f8ef93f6e097e934442e1792da614dff&quot;</span>,</span><br><span class="line">    <span class="string">&quot;sha256:ed44ff7a11e0afd3e5b58c730514faeac7d6a12faff3f52aa33d33e0369e7aad&quot;</span></span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>도커는 다운로드한 이미지를 로컬에 저장하고 관리하기 위해 **”레이어 DB”**를 사용한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/image/overlay2<span class="comment"># tree -L 2</span></span><br><span class="line">.</span><br><span class="line">├── distribution</span><br><span class="line">│   ├── diffid-by-digest</span><br><span class="line">│   └── v2metadata-by-diffid</span><br><span class="line">├── imagedb</span><br><span class="line">│   ├── content</span><br><span class="line">│   └── metadata</span><br><span class="line">├── layerdb  <span class="comment"># 레이어 스택 정보</span></span><br><span class="line">│   ├── mounts</span><br><span class="line">│   ├── sha256</span><br><span class="line">│   └── tmp</span><br><span class="line">└── repositories.json</span><br></pre></td></tr></table></figure>
+
+
+
+<table>
+<thead>
+<tr>
+<th>레이어디비 항목</th>
+<th>내용</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>db id</td>
+<td>로컬에서 레이어식별을 위한 레이어디비 id<br />이미지를 pull 받을 때 레이어 별로 생성됨. (받을 때마다 달라짐)</td>
+</tr>
+<tr>
+<td>cache id</td>
+<td>레이어가 저장된 로컬경로 id (경로를 식별)<br />- &#x2F;var&#x2F;lib&#x2F;docker&#x2F;overlay2&#x2F;{cache-id}</td>
+</tr>
+<tr>
+<td>diff</td>
+<td>layer id (레이어를 식별)</td>
+</tr>
+<tr>
+<td>parent</td>
+<td>부모레이어를 가리키는 포인터 (db id) 어떤 레이어 위로 올라갈지 지정</td>
+</tr>
+</tbody></table>
+<h3 id="db-id"><a href="#db-id" class="headerlink" title="db id"></a>db id</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/image/overlay2/layerdb<span class="comment"># tree -L 2 sha256 -I &quot;tar-*|size&quot;</span></span><br><span class="line">sha256</span><br><span class="line">├── 311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73 <span class="comment"># db id</span></span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   └── diff <span class="comment"># layer id</span></span><br><span class="line">├── 807d78e4cdc589c2cdefb7bb6049a31bcc7bf0f90f335a8a8de1abeb0e6a3993</span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   ├── diff</span><br><span class="line">│   └── parent</span><br><span class="line">├── 89b7e61557f3502dc01aeae499b451574376c3e4c46e49294c72e22cd2d9634c</span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   ├── diff</span><br><span class="line">│   └── parent</span><br><span class="line">├── 9f55692205d904037fbc69a1d59354665af3c0c2a767b5e799e719170085bc11</span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   ├── diff</span><br><span class="line">│   └── parent</span><br><span class="line">├── a0e6c2974935e56e8d57d6fea041399b290da1566d82ea1a7d9c3ec7ef60a366</span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   ├── diff</span><br><span class="line">│   └── parent</span><br><span class="line">├── a216b497301a9fc6283077c0906140e22b8f3a67ba92ab6253f036f48e1ff4b1</span><br><span class="line">│   ├── cache-id</span><br><span class="line">│   ├── diff</span><br><span class="line">│   └── parent</span><br><span class="line">└── a3169fdf28b9329e3f1882c095bf11e12a465419c759169682ca706de81bef84</span><br><span class="line">    ├── cache-id</span><br><span class="line">    ├── diff</span><br><span class="line">    └── parent</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>tree -L 2 sha256 -I “tar-*|size” 에서 -I 는 제외항목을 작성</li>
+</ul>
+<h3 id="cache-id-db-id"><a href="#cache-id-db-id" class="headerlink" title="cache-id : db-id"></a>cache-id : db-id</h3><ul>
+<li>cache-id 리스트<ul>
+<li>포맷: “cache-id” .&#x2F;sha256&#x2F;“db id”</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/image/overlay2/layerdb<span class="comment"># find . -name cache-id -exec cat &#123;&#125; \; -print</span></span><br><span class="line">52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d./sha256/311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73/cache-id</span><br><span class="line">bd58ec4c3b456591049ce5ad929fac42a96ad23fc28836a29917039d07295ed4./sha256/a0e6c2974935e56e8d57d6fea041399b290da1566d82ea1a7d9c3ec7ef60a366/cache-id</span><br><span class="line">5ebc10176fffee11727b0baa5f552146a74a4fa53935268e2c10726f08f61aa7./sha256/89b7e61557f3502dc01aeae499b451574376c3e4c46e49294c72e22cd2d9634c/cache-id</span><br><span class="line">20fae55020e28561082510b431ec0f85a8bb3a1cebb34f36916b91acc3833c84./sha256/807d78e4cdc589c2cdefb7bb6049a31bcc7bf0f90f335a8a8de1abeb0e6a3993/cache-id</span><br><span class="line">f3453bed47cc62a3d58d00327b6a76fbf15612220a7b1b4825936296fd0b845f./sha256/9f55692205d904037fbc69a1d59354665af3c0c2a767b5e799e719170085bc11/cache-id</span><br><span class="line">64c2e72761ef2dbf88db1e27bf590f901f5d0e7b3f778635ee976a2f834478ba./sha256/a216b497301a9fc6283077c0906140e22b8f3a67ba92ab6253f036f48e1ff4b1/cache-id</span><br><span class="line">067ec145f89b61cd0b6fd41745163c76e04f86db5b4a59a5358cc82a3099526a./sha256/a3169fdf28b9329e3f1882c095bf11e12a465419c759169682ca706de81bef84/cache-id</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>레이어의 로컬 저장 경로(&#x2F;var&#x2F;lib&#x2F;docker&#x2F;overlay2&#x2F;{cache-id})</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2<span class="comment"># ls -l</span></span><br><span class="line">total 32</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 067ec145f89b61cd0b6fd41745163c76e04f86db5b4a59a5358cc82a3099526a</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 20fae55020e28561082510b431ec0f85a8bb3a1cebb34f36916b91acc3833c84</span><br><span class="line">drwx--x--- 3 root root 4096 Sep 30 12:31 52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 5ebc10176fffee11727b0baa5f552146a74a4fa53935268e2c10726f08f61aa7</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 64c2e72761ef2dbf88db1e27bf590f901f5d0e7b3f778635ee976a2f834478ba</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 bd58ec4c3b456591049ce5ad929fac42a96ad23fc28836a29917039d07295ed4</span><br><span class="line">drwx--x--- 4 root root 4096 Sep 30 12:31 f3453bed47cc62a3d58d00327b6a76fbf15612220a7b1b4825936296fd0b845f</span><br><span class="line">drwx------ 2 root root 4096 Sep 30 12:31 l</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="layer-id-db-id"><a href="#layer-id-db-id" class="headerlink" title="layer id : db id"></a>layer id : db id</h3><ul>
+<li>앞에가 <strong>layer id</strong>, 뒤에가 db id 이다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/image/overlay2/layerdb<span class="comment"># find . -name diff -exec cat &#123;&#125; \; -print</span></span><br><span class="line">sha256:311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73./sha256/311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73/diff</span><br><span class="line">sha256:674ca5344f959090515e9eac79055d8630851b21bbd584ac32765315284c05c5./sha256/a0e6c2974935e56e8d57d6fea041399b290da1566d82ea1a7d9c3ec7ef60a366/diff</span><br><span class="line">sha256:d9664e6da0f787fb8c04e80f1e731223f8ef93f6e097e934442e1792da614dff./sha256/89b7e61557f3502dc01aeae499b451574376c3e4c46e49294c72e22cd2d9634c/diff</span><br><span class="line">sha256:ed44ff7a11e0afd3e5b58c730514faeac7d6a12faff3f52aa33d33e0369e7aad./sha256/807d78e4cdc589c2cdefb7bb6049a31bcc7bf0f90f335a8a8de1abeb0e6a3993/diff</span><br><span class="line">sha256:7f8881cae5296e2ef0103706a326235494b5f1dcd9ea960656165cf7643ddd47./sha256/9f55692205d904037fbc69a1d59354665af3c0c2a767b5e799e719170085bc11/diff</span><br><span class="line">sha256:dca0e6f80e8df5d85d45426101fefba3d41abe4fc90be994074066d4b135bef5./sha256/a216b497301a9fc6283077c0906140e22b8f3a67ba92ab6253f036f48e1ff4b1/diff</span><br><span class="line">sha256:f21128d548a5122f430a58f123deb9c8b80f70b9fc98df280a9619b7e38b6a32./sha256/a3169fdf28b9329e3f1882c095bf11e12a465419c759169682ca706de81bef84/diff</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="parent-id-db-id"><a href="#parent-id-db-id" class="headerlink" title="parent id : db id"></a>parent id : db id</h3><ul>
+<li><p>parent 파일은 부모레이어의 db id를 갖고 있음 (가장 밑바닥은 parent 없음)</p>
+</li>
+<li><p>sha256:”db-id”.&#x2F;sha256&#x2F;“parent-id”</p>
+</li>
+<li><p>311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73 가 최상위 부모 db -id 이다.</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/image/overlay2/layerdb<span class="comment"># find . -name parent -exec cat &#123;&#125; \; -print</span></span><br><span class="line">sha256:311627f8702d2d97e63b916cad711aa9f962a1f20da5572d68b8f223ff051e73./sha256/a0e6c2974935e56e8d57d6fea041399b290da1566d82ea1a7d9c3ec7ef60a366/parent</span><br><span class="line">sha256:a216b497301a9fc6283077c0906140e22b8f3a67ba92ab6253f036f48e1ff4b1./sha256/89b7e61557f3502dc01aeae499b451574376c3e4c46e49294c72e22cd2d9634c/parent</span><br><span class="line">sha256:89b7e61557f3502dc01aeae499b451574376c3e4c46e49294c72e22cd2d9634c./sha256/807d78e4cdc589c2cdefb7bb6049a31bcc7bf0f90f335a8a8de1abeb0e6a3993/parent</span><br><span class="line">sha256:a0e6c2974935e56e8d57d6fea041399b290da1566d82ea1a7d9c3ec7ef60a366./sha256/9f55692205d904037fbc69a1d59354665af3c0c2a767b5e799e719170085bc11/parent</span><br><span class="line">sha256:a3169fdf28b9329e3f1882c095bf11e12a465419c759169682ca706de81bef84./sha256/a216b497301a9fc6283077c0906140e22b8f3a67ba92ab6253f036f48e1ff4b1/parent</span><br><span class="line">sha256:9f55692205d904037fbc69a1d59354665af3c0c2a767b5e799e719170085bc11./sha256/a3169fdf28b9329e3f1882c095bf11e12a465419c759169682ca706de81bef84/parent</span><br></pre></td></tr></table></figure>
+
+
+
+<h3 id="레이어-스택"><a href="#레이어-스택" class="headerlink" title="레이어 스택"></a>레이어 스택</h3><ul>
+<li>layer id : 레이어 식별</li>
+<li>db id : 레이어관리</li>
+<li>cache-id : 레이어 저장</li>
+</ul>
+<p><img src="/blog/img/layer-01.png"></p>
+<h3 id="실제저장-위치"><a href="#실제저장-위치" class="headerlink" title="실제저장 위치"></a>실제저장 위치</h3><ul>
+<li>cache id 폴더이름</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2<span class="comment"># tree -L 1</span></span><br><span class="line">.</span><br><span class="line">├── 067ec145f89b61cd0b6fd41745163c76e04f86db5b4a59a5358cc82a3099526a</span><br><span class="line">├── 20fae55020e28561082510b431ec0f85a8bb3a1cebb34f36916b91acc3833c84</span><br><span class="line">├── 52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d</span><br><span class="line">├── 5ebc10176fffee11727b0baa5f552146a74a4fa53935268e2c10726f08f61aa7</span><br><span class="line">├── 64c2e72761ef2dbf88db1e27bf590f901f5d0e7b3f778635ee976a2f834478ba</span><br><span class="line">├── bd58ec4c3b456591049ce5ad929fac42a96ad23fc28836a29917039d07295ed4</span><br><span class="line">├── f3453bed47cc62a3d58d00327b6a76fbf15612220a7b1b4825936296fd0b845f</span><br><span class="line">└── l</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>l 디렉터리에는 레이어 저장소(cache-id) 심볼릭 링크가 존재</li>
+</ul>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-29T03:20:30.000Z" title="2024. 12. 29. 오후 12:20:30">2024-12-29</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-29T11:11:04.498Z" title="2024. 12. 29. 오후 8:11:04">2024-12-29</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-overlayFS/">container/overlayFS</a></span><span class="level-item">13 minutes read (About 1996 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/29/docs/overlayFS/container-layer/">container layer</a></h1><div class="content"><ul>
+<li>컨테이너 레이어구조 (overlayFS)를 알아보고, 장점에 대해 알아보자</li>
+</ul>
+<h3 id="docker-info-overlay2"><a href="#docker-info-overlay2" class="headerlink" title="docker info (overlay2)"></a>docker info (overlay2)</h3><ul>
+<li>Storage Driver: overlay2</li>
+<li>Docker Root Dir: &#x2F;var&#x2F;lib&#x2F;docker</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># docker info</span></span><br><span class="line">...</span><br><span class="line"> Storage Driver: overlay2</span><br><span class="line">...</span><br><span class="line"> Cgroup Driver: cgroupfs</span><br><span class="line">...</span><br><span class="line"> Docker Root Dir: /var/lib/docker</span><br><span class="line">...</span><br><span class="line">WARNING: No swap <span class="built_in">limit</span> support</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># docker info | grep Storage</span></span><br><span class="line">WARNING: No swap <span class="built_in">limit</span> support</span><br><span class="line"> Storage Driver: overlay2</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="도커-이미지-레이어-구조"><a href="#도커-이미지-레이어-구조" class="headerlink" title="도커 이미지 레이어 구조"></a>도커 이미지 레이어 구조</h2><ul>
+<li>오버레이 파일시스템과 같음</li>
+</ul>
+<p>Image layers &#x3D;&#x3D; Lower Dir R&#x2F;O (Read Only, 읽기 전용)<br>Container layer &#x3D;&#x3D; Upper Dir  R&#x2F;W (Read-Write) - 컨테이너 실행 시 image layer 위에 올라감</p>
+<ul>
+<li>레이어 구조는 중복도 최소화하고 동일한 레이어를 사용할 경우 공유할 수 있어 저장공간을 절약한다.</li>
+<li>대신 컨테이너에서 Image layer의 파일을 변경해야 할 경우에는 CoW (Copy-On-Write)로 동작한다.<ul>
+<li>이 때, 변경할 파일을 Container layer(Thin R&#x2F;W layer)로 복사해 와서 처리해야 하므로, 일반적인 write와 비교해서 속도도 느리고 오버헤드가 발생한다. (따라서 Image layer의 파일 변경은 되도록 피해야 한다)</li>
+</ul>
+</li>
+</ul>
+<h3 id="도커-이미지삭제"><a href="#도커-이미지삭제" class="headerlink" title="도커 이미지삭제"></a>도커 이미지삭제</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">\# docker rm $(docker ps -a -q)</span><br><span class="line">\# docker rmi -f $(docker images -q)</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h3 id="레이어-구조"><a href="#레이어-구조" class="headerlink" title="레이어 구조"></a>레이어 구조</h3><ul>
+<li>도커 이미지의 레이어 구조는 “GraphDriver”에 나타나 있다.</li>
+<li>LowerDir 옵션은 콜론(:) 을 기준으로 여러개 레이어를 설정할 수 있다. 맨 뒤가 베이스레이어 이다.</li>
+</ul>
+<p><img src="/blog/img/layer-03.png"></p>
+<p><img src="/blog/img/layer-04.png"></p>
+<ul>
+<li><p>베이스레이어 cache-id 로 들어가면 이미지 디렉토리가 보임</p>
+</li>
+<li><p>도커는 내부적으로 Debian 12 slim</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d/diff/etc<span class="comment"># cat issue</span></span><br><span class="line">Debian GNU/Linux 12 \n \l</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>debian:12-slim 는 nginx 이미지레이어에 이미 존재하므로 새로 받지 않는다.<ul>
+<li>레이어는 받지 않지만, 이미지 정보에는 추가됨 (docker images)</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker pull debian:12-slim</span></span><br><span class="line">12-slim: Pulling from library/debian</span><br><span class="line">e886f0f47ef5: Already exists <span class="comment"># 해당 distribution id 는 이미 있다고 받지 않음</span></span><br><span class="line">Digest: sha256:24c92a69df28b21676d721fe18c0bf64138bfc69b486746ad935b49cc31b0b91</span><br><span class="line">Status: Downloaded newer image <span class="keyword">for</span> debian:12-slim</span><br><span class="line">docker.io/library/debian:12-slim</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>두 개 이미지의 레이어를 조회했을 때, 데비안은 nginx 의 레이어 중 하나와 공유한다.</li>
+</ul>
+<p><img src="/blog/img/layer-05.png"></p>
+<p><img src="/blog/img/layer-06.png"></p>
+<h3 id="이미지레이어-공유-확인"><a href="#이미지레이어-공유-확인" class="headerlink" title="이미지레이어 공유 확인"></a>이미지레이어 공유 확인</h3><ul>
+<li>lowerDir의 실제 저장소에서 파일을 저장해본다<ul>
+<li>** lowerDir는 RO인데, 이렇게 host권한을 이용하는건 어쩔수 없다. 컨테이너 실행중에 실제로 이런식으로 사용하면 안됨</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d/diff<span class="comment"># echo &quot;hello worled&quot; &gt; world</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>debian:12-slim 컨테이너실행 (두개실행한다)<ul>
+<li>lowerDir에서 변경한 데이터 확인 가능</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker run -it debian:12-slim</span></span><br><span class="line">root@c267289b8c2b:/<span class="comment"># cat world</span></span><br><span class="line">hello worled</span><br></pre></td></tr></table></figure>
+
+
+
+<ul>
+<li>컨테이너 두개 구조를 살펴보면, LowerDir 은 Debian의 cache-id 에 있던 id와 같음을 알 수 있다.</li>
+</ul>
+<p><img src="/blog/img/layer-07.png"></p>
+<p><img src="/blog/img/layer-02.png"></p>
+<ul>
+<li>컨테이너의 overlay 구조를 mount에서 파악 가능</li>
+</ul>
+<p><img src="/blog/img/layer-08.png"></p>
+<ul>
+<li>위 명령어결과에서 lowerDir 는 심볼릭링크 되어있는데, 따라가보면 실제 이미지저장장소가 나옴</li>
+</ul>
+<p><img src="/blog/img/layer-09.png"></p>
+<h3 id="컨테이너-데이터-변경"><a href="#컨테이너-데이터-변경" class="headerlink" title="컨테이너 데이터 변경"></a>컨테이너 데이터 변경</h3><p>컨테이너의 쓰기는 UpperDir에서 이루어진다.</p>
+<ul>
+<li>컨테이너1에서 hello파일을 변경하면, 컨테이너1의 UpperDir에서 COW 가 이루어져 쓰기가 발생하고, 변경내용을 읽을 수 있다.</li>
+<li>하지만 컨테이너2에서 world 파일을 변경한 내용은 읽을 수 없다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@c267289b8c2b:/<span class="comment"># cat world</span></span><br><span class="line">hello worled</span><br><span class="line">root@c267289b8c2b:/<span class="comment"># echo &quot;container mod&quot; &gt; hello</span></span><br><span class="line">root@c267289b8c2b:/<span class="comment"># cat hello</span></span><br><span class="line">container mod</span><br><span class="line">root@c267289b8c2b:/<span class="comment"># cat world</span></span><br><span class="line">hello worled</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>컨테이너2도 마찬가지.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@d082030bfc8f:/<span class="comment"># cat hello</span></span><br><span class="line">hello</span><br><span class="line">root@d082030bfc8f:/<span class="comment"># echo &quot;container2 mod&quot; &gt; world</span></span><br><span class="line">root@d082030bfc8f:/<span class="comment"># cat hello</span></span><br><span class="line">hello</span><br><span class="line">root@d082030bfc8f:/<span class="comment"># cat world</span></span><br><span class="line">container2 mod	</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>lowerDir  에서도 컨테이너가 변경한 내용을 볼 수 없다.<ul>
+<li>단지, lowerDir에서 다시 hello 파일 내용을 변경했을때, UpperDir 가존재하는 컨테이너1에서는 변경내용을 못읽지만</li>
+<li>UpperDir가 없는 container2는 읽을 수 있다.</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d/diff<span class="comment"># cat hello</span></span><br><span class="line">hello</span><br><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d/diff<span class="comment"># cat world</span></span><br><span class="line">hello worled</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>overlayFS 와 같은 개념이라고 보면 된다.</li>
+</ul>
+<p><img src="/blog/img/overlayfs2-01.png"></p>
+<ul>
+<li>history 로 이미지 distribution id 확인 가능.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2<span class="comment"># docker history nginx</span></span><br><span class="line">IMAGE          CREATED       CREATED BY                                      SIZE      COMMENT</span><br><span class="line">2a4fbb36e966   9 days ago    /bin/sh -c <span class="comment">#(nop)  CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon…   0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  STOPSIGNAL SIGQUIT           0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  EXPOSE 80                    0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  ENTRYPOINT [&quot;/docker-entr…   0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop) COPY file:9e3b2b63db9f8fc7…   4.62kB</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop) COPY file:57846632accc8975…   3.02kB</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop) COPY file:3b1b9915b7dd898a…   298B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop) COPY file:caec368f5a54f70a…   2.12kB</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop) COPY file:01e75c6dd0ce317d…   1.62kB</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="built_in">set</span> -x     &amp;&amp; groupadd --system -…   94.9MB</span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  ENV PKG_RELEASE=1~bookworm   0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  ENV NJS_VERSION=0.8.0        0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  ENV NGINX_VERSION=1.25.2     0B</span></span><br><span class="line">&lt;missing&gt;      9 days ago    /bin/sh -c <span class="comment">#(nop)  LABEL maintainer=NGINX Do…   0B</span></span><br><span class="line">&lt;missing&gt;      10 days ago   /bin/sh -c <span class="comment">#(nop)  CMD [&quot;bash&quot;]                 0B</span></span><br><span class="line">&lt;missing&gt;      10 days ago   /bin/sh -c <span class="comment">#(nop) ADD file:ec1a6e0aedd76c8fd…   97.1M</span></span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~# docker run --nginx=nginx --rm -it 2a4fbb36e966</span><br><span class="line">unknown flag: --nginx</span><br><span class="line">See &#x27;docker run --help&#x27;.</span><br><span class="line">root@seongtki:~# docker run --nginx=nginx --rm -it 2a4fbb36e966 /bin/bash</span><br><span class="line">unknown flag: --nginx</span><br><span class="line">See &#x27;docker run --help&#x27;.</span><br><span class="line">root@seongtki:~# docker run --name=nginx --rm -it 2a4fbb36e966 /bin/bash</span><br><span class="line">root@0d2ed11b96f0:/# rm /bin/</span><br><span class="line">Display all 281 possibilities? (y or n)^C</span><br><span class="line">root@0d2ed11b96f0:/# rm /bin/cat</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d# docker container diff nginx</span><br><span class="line">C /usr</span><br><span class="line">C /usr/bin</span><br><span class="line">D /usr/bin/cat</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d# docker container commit nginx nginx:rm_cat</span><br><span class="line">sha256:6f8e2630eee109051d1878733b1d064b5e5158af1eae73f5a5a44a8b6c032d76</span><br><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d# docker imsages</span><br><span class="line">docker: &#x27;imsages&#x27; is not a docker command.</span><br><span class="line">See &#x27;docker --help&#x27;</span><br><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d# docker images</span><br><span class="line">REPOSITORY   TAG       IMAGE ID       CREATED         SIZE</span><br><span class="line">nginx        rm_cat    6f8e2630eee1   9 seconds ago   192MB</span><br><span class="line">nginx        latest    2a4fbb36e966   10 days ago     192MB</span><br><span class="line">debian       12-slim   217435774160   10 days ago     97.1MB</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/var/lib/docker/overlay2/52943c6506870bd23a1bec337a8fcfc018fd0b6581be161ddc4d3bb0363b8b5d# docker history nginx:rm_cat</span><br><span class="line">IMAGE          CREATED          CREATED BY                                      SIZE      COMMENT</span><br><span class="line">6f8e2630eee1   29 seconds ago   /bin/bash                                       0B</span><br><span class="line">2a4fbb36e966   10 days ago      /bin/sh -c #(nop)  CMD [&quot;nginx&quot; &quot;-g&quot; &quot;daemon…   0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  STOPSIGNAL SIGQUIT           0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  EXPOSE 80                    0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  ENTRYPOINT [&quot;/docker-entr…   0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) COPY file:9e3b2b63db9f8fc7…   4.62kB</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) COPY file:57846632accc8975…   3.02kB</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) COPY file:3b1b9915b7dd898a…   298B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) COPY file:caec368f5a54f70a…   2.12kB</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) COPY file:01e75c6dd0ce317d…   1.62kB</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c set -x     &amp;&amp; groupadd --system -…   94.9MB</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  ENV PKG_RELEASE=1~bookworm   0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  ENV NJS_VERSION=0.8.0        0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  ENV NGINX_VERSION=1.25.2     0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  LABEL maintainer=NGINX Do…   0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop)  CMD [&quot;bash&quot;]                 0B</span><br><span class="line">&lt;missing&gt;      10 days ago      /bin/sh -c #(nop) ADD file:ec1a6e0aedd76c8fd…   97.1M</span><br></pre></td></tr></table></figure>
+
+
+
+
+
+<h2 id="기존-이미지에-레이어-추가"><a href="#기존-이미지에-레이어-추가" class="headerlink" title="기존 이미지에 레이어 추가"></a>기존 이미지에 레이어 추가</h2><ul>
+<li>컨테이너 실행후, 파일변경</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker run --name=nginx --rm -it 2a4fbb36e966 /bin/bash</span></span><br><span class="line">root@db6d1638925b:/<span class="comment"># rm /bin/ta</span></span><br><span class="line">tabs     <span class="built_in">tac</span>      <span class="built_in">tail</span>     tar      taskset</span><br><span class="line">root@db6d1638925b:/<span class="comment"># rm /bin/ta</span></span><br><span class="line">tabs     <span class="built_in">tac</span>      <span class="built_in">tail</span>     tar      taskset</span><br><span class="line">root@db6d1638925b:/<span class="comment"># rm /bin/tar</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>호스트에서 파일 변경 확인하고, 새로운 이미지로 커밋한다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">docker container diff nginx</span><br><span class="line">docker container commit nginx nginx:rm_tar</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>새로운 레이어를 확인한다.</li>
+</ul>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker image inspect nginx:rm_tar | jq &#x27;.[].RootFS&#x27;</span><br></pre></td></tr></table></figure>
+
+<p><img src="/blog/img/layer-10.png"></p>
+<ul>
+<li><p>마지막에 layerid 하나가 추가되었다.</p>
+</li>
+<li><p>layerid 에대한 db-id 확인후, cacheid 를 확인해서 실제 레이어 저장소로 이동한다.</p>
+</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">find /var/lib/docker/image/overlay2/layerdb -name <span class="string">&quot;diff&quot;</span> -<span class="built_in">exec</span> <span class="built_in">cat</span> &#123;&#125; \; -<span class="built_in">print</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>writeout 정보가 있음을 확인.</li>
+</ul>
+<p><img src="/blog/img/layer-11.png"></p>
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-29T01:20:30.000Z" title="2024. 12. 29. 오전 10:20:30">2024-12-29</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-29T11:10:56.828Z" title="2024. 12. 29. 오후 8:10:56">2024-12-29</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-overlayFS/">container/overlayFS</a></span><span class="level-item">4 minutes read (About 645 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/29/docs/overlayFS/overlayFS/">Overlay Filesystem</a></h1><div class="content"><ul>
+<li><p>여러 filesystem을 하나로 mount하는 기능.</p>
+</li>
+<li><p>두 파일시스템에 동일한 파일이 있는경우</p>
+<ul>
+<li>나중에 마운트 되는 파일시스템의 파일을 오버레이한다.</li>
+</ul>
+</li>
+<li><p>하위 파일시스템에 대한 쓰기 작업 시</p>
+<ul>
+<li>그 시점에 Copy-on-write 실시 () 복사본을 생성하여 수행 (원본유지))</li>
+</ul>
+</li>
+<li><p>이령, 상속 파일시스템으로 불린다.</p>
+</li>
+</ul>
+<h3 id="OverlayFS2"><a href="#OverlayFS2" class="headerlink" title="OverlayFS2"></a>OverlayFS2</h3><ul>
+<li>Merged Dir: 통합 뷰 (<strong>mount point</strong>)</li>
+<li>Upper Dir: Writable. 컨테이너에서의 변경된 내용이 쓰이는 레이어</li>
+<li>Lower Dir: Read only, 기존 이미지 영역</li>
+<li>Work Dir: “atomic action”을 보장하기 위해 merge에 반영되기 전에 파일을 준비하는 데 사용된다.</li>
+</ul>
+<p><img src="/blog/img/overlayfs2-01.png"></p>
+<h2 id="overlay-test"><a href="#overlay-test" class="headerlink" title="overlay test"></a>overlay test</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> overlay-test</span><br><span class="line"><span class="built_in">cd</span> overlay-test</span><br><span class="line"><span class="built_in">mkdir</span> image1 image2 container work merge</span><br><span class="line"><span class="built_in">touch</span> image1/a image1/b image2/c</span><br><span class="line"></span><br><span class="line"><span class="comment"># merge: mount point</span></span><br><span class="line">mount -t overlay overlay -o lowerdir=image2:image1,upperdir=container,workdir=work merge</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/<span class="comment"># mount | grep overlay-test/</span></span><br><span class="line">overlay on /overlay-test/merge <span class="built_in">type</span> overlay (rw,relatime,lowerdir=image2:image1,upperdir=container,workdir=work)</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>파일구조</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment"># tree -I .</span></span><br><span class="line">├── container</span><br><span class="line">├── image1</span><br><span class="line">│   ├── a</span><br><span class="line">│   └── b</span><br><span class="line">├── image2</span><br><span class="line">│   └── c</span><br><span class="line">├── merge</span><br><span class="line">│   ├── a</span><br><span class="line">│   ├── b</span><br><span class="line">│   └── c</span><br><span class="line">└── work</span><br><span class="line">    └── work</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>merge&#x2F;a 삭제 후 디렉토리</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment"># rm merge/a</span></span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># tree -I .</span></span><br><span class="line">├── container</span><br><span class="line">│   └── a <span class="comment"># 삭제파일이 upperdir 에 적용되어 보인다 (RW)</span></span><br><span class="line">├── image1</span><br><span class="line">│   ├── a <span class="comment"># lowerdir는 변경이 단됨 (RO)</span></span><br><span class="line">│   └── b</span><br><span class="line">├── image2</span><br><span class="line">│   └── c</span><br><span class="line">├── merge</span><br><span class="line">│   ├── b</span><br><span class="line">│   └── c</span><br><span class="line">└── work</span><br><span class="line">    └── work</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>lowerdir 에 파일 수정 시 merge에도 적용되어 보인다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment"># echo &#x27;hello bb&#x27; &gt; image1/b</span></span><br><span class="line"></span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat image1/b</span></span><br><span class="line">hello bbb</span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat merge/b</span></span><br><span class="line">hello bbb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>merge파일을 수정하면, lowerdir은 더이상 변경되지 않는다.</li>
+<li>Copy-On-Write 가 발생하기 때문이다. (실제 파일이 사용될 때 카피를 하고 수정하기 때문.)</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment"># echo &#x27;hello m&#x27; &gt; merge/b</span></span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat merge/b</span></span><br><span class="line">hello m</span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat image1/b</span></span><br><span class="line">hello bbb</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>이후 lowerdir파일을 변경해도 merge파일을 변경되지 않는다.</li>
+</ul>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment">#  echo &#x27;hello bbbb&#x27; &gt; image1/b</span></span><br><span class="line"></span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat image1/b</span></span><br><span class="line">hello bbbb</span><br><span class="line">root@seongtki:/overlay-test<span class="comment"># cat merge/b</span></span><br><span class="line">hello m</span><br></pre></td></tr></table></figure>
+
+
+
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/overlay-test<span class="comment"># tree -I .</span></span><br><span class="line">.</span><br><span class="line">├── container</span><br><span class="line">│   ├── a</span><br><span class="line">│   └── b</span><br><span class="line">├── image1</span><br><span class="line">│   ├── a</span><br><span class="line">│   └── b</span><br><span class="line">├── image2</span><br><span class="line">│   └── c</span><br><span class="line">├── merge</span><br><span class="line">│   ├── b</span><br><span class="line">│   └── c</span><br><span class="line">└── work</span><br><span class="line">    └── work</span><br></pre></td></tr></table></figure>
+
+
+
+</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-22T08:30:35.000Z" title="2024. 12. 22. 오후 5:30:35">2024-12-22</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-22T10:37:37.918Z" title="2024. 12. 22. 오후 7:37:37">2024-12-22</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/loadbaleancer-metalLB/">loadbaleancer/metalLB</a></span><span class="level-item">25 minutes read (About 3726 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/22/docs/loadbalancer/metallb/">MetalLB</a></h1><div class="content"><h2 id="서비스-Service-LoadBalancer-Type-통신-흐름"><a href="#서비스-Service-LoadBalancer-Type-통신-흐름" class="headerlink" title="서비스(Service) LoadBalancer Type 통신 흐름"></a>서비스(Service) LoadBalancer Type 통신 흐름</h2><p>외부 클라이언트가 <code>로드밸런서</code> 접속 시 부하분산 되어 노드 도달 후 iptables 룰로 목적지 파드와 통신됨</p>
 <p><img src="/blog/img/lb-01.png"></p>
 <p><img src="/blog/img/lb-02.png"></p>
 <ul>
@@ -570,315 +910,7 @@
 
 
 <p><img src="/blog/img/user-01.png"></p>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-08T03:40:35.000Z" title="2024. 12. 8. 오후 12:40:35">2024-12-08</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-08T12:33:07.065Z" title="2024. 12. 8. 오후 9:33:07">2024-12-08</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">6 minutes read (About 956 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/08/docs/namespace/pid-namespace/">pid namespace</a></h1><div class="content"><ul>
-<li>Process ID 넘버스페이스를 isolate 한다.</li>
-<li>부모,자식 네임스페이스 중첩구조</li>
-<li>부모 네임스페이스 (see) -&gt; 자식 네임스페이스</li>
-</ul>
-<h3 id="host-pid-1"><a href="#host-pid-1" class="headerlink" title="host pid 1"></a>host pid 1</h3><ul>
-<li>init 프로세스 (커널이 생성해준다)</li>
-<li>시그널 처리</li>
-<li>좀비, 고아프로세스 처리</li>
-<li>kill 1 되면, 시스템 패닉되어 reboot해야함</li>
-</ul>
-<h3 id="컨테이너-pid-1"><a href="#컨테이너-pid-1" class="headerlink" title="컨테이너 pid 1"></a>컨테이너 pid 1</h3><ul>
-<li>unshare 할 때 fork 하여 자식 pid namespace의 pid 1 로 실행</li>
-<li>시그널 처리</li>
-<li>좀비, 고아프로세스 처리</li>
-<li>죽으면 컨테이너가 종료됨</li>
-</ul>
-<h3 id="unshare"><a href="#unshare" class="headerlink" title="unshare"></a>unshare</h3><ul>
-<li>-p : pid namespace</li>
-<li>-f : fork</li>
-<li>–mount-proc : proc 파일시스템 마운트</li>
-</ul>
-<h3 id="x2F-proc"><a href="#x2F-proc" class="headerlink" title="&#x2F;proc"></a>&#x2F;proc</h3><ul>
-<li>메모리 기반의 가상파일 시스템<ul>
-<li>pseudo filesystem (memory based virtual filesystem)</li>
-</ul>
-</li>
-<li>커널이 관리하는 시스템 정보를 제공</li>
-<li>시스템 모니터링과 분석에 활용</li>
-<li>커널 데이터 구조의 접근을 쉽게 할 수 있음</li>
-<li>ps, mount ,umount 할 때 &#x2F;proc 파일시스템을 통해서 명령어가 실행됨.</li>
-<li>컨테이너 (pid namespace) 안에서 프로세스 정보를 조회하고 제어하기 위해 사용한다.</li>
-</ul>
-<h3 id="예제"><a href="#예제" class="headerlink" title="예제"></a>예제</h3><ul>
-<li>fork하면서 pid namespace 로 격리함</li>
-<li>proc 파일시스템을 마운트 하지 않으면 proc 정보가 보임</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># unshare -fp --mount-proc /bin/sh</span></span><br><span class="line">\<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>컨테이너<ul>
-<li>pid 1은 &#x2F;bin&#x2F;sh이다.</li>
-<li>namespace inode 조회.</li>
-</ul>
-</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 컨테이너</span></span><br><span class="line"><span class="comment"># ps -ef</span></span><br><span class="line">UID          PID    PPID  C STIME TTY          TIME CMD</span><br><span class="line">root           1       0  0 04:41 pts/0    00:00:00 /bin/sh</span><br><span class="line">root           2       1  0 04:42 pts/0    00:00:00 ps -ef</span><br><span class="line"></span><br><span class="line"><span class="comment"># lsns -t pid -p 1</span></span><br><span class="line">        NS TYPE NPROCS PID USER COMMAND</span><br><span class="line">4026532398 pid       2   1 root /bin/sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="host"><a href="#host" class="headerlink" title="host"></a>host</h3><ul>
-<li>pid 1은 &#x2F;sbin&#x2F;init 이다. (컨테이너와 다름)</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps -ef</span></span><br><span class="line">UID          PID    PPID  C STIME TTY          TIME CMD</span><br><span class="line">root           1       0  0 03:21 ?        00:00:01 /sbin/init</span><br><span class="line">root           2       0  0 03:21 ?        00:00:00 [kthreadd]</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>unshare명령에 대한 프로세스의 자식에 &#x2F;bin&#x2F;sh 가 있다. </li>
-<li>&#x2F;bin&#x2F;sh의 inode 를 조회해 보면, 컨테이너의 pid 1의 inode와 같음을 알 수 있다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps -ef | grep /bin/sh</span></span><br><span class="line">root       15787   15768  0 04:41 pts/0    00:00:00 unshare -fp --mount-proc /bin/sh</span><br><span class="line">root       15788   15787  0 04:41 pts/0    00:00:00 /bin/sh</span><br><span class="line">root       15952   15938  0 04:43 pts/2    00:00:00 grep --color=auto /bin/sh</span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># lsns -t pid -p 15788</span></span><br><span class="line">        NS TYPE NPROCS   PID USER COMMAND</span><br><span class="line">4026532398 pid       1 15788 root /bin/sh</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>위 예제의 pid namespace 구조도는 아래와 같다.</li>
-</ul>
-<p><img src="/blog/img/pid-01.png"></p>
-<h2 id="signal-handler"><a href="#signal-handler" class="headerlink" title="signal handler"></a>signal handler</h2><h3 id="pid-namespace"><a href="#pid-namespace" class="headerlink" title="pid namespace"></a>pid namespace</h3><p>컨테이너의 pid 1을 SIGKILL 하면 컨테이너가 종료되는 것을 알 수 있다.</p>
-<ul>
-<li>컨테이너로 시그널을 보낼 때, 핸들링하는 프로그램 데몬이 존재해야 하지만, 없기 때문에 SIGKILL을 제외한 시그널을 무시된다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGINT 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 15788 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 15788 # pid namespace 종료</span></span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="docker-pid"><a href="#docker-pid" class="headerlink" title="docker pid"></a>docker pid</h3><ul>
-<li>busybox 를 실행하고 sleep 3600 cmd 실행하도록 컨테이너를 생성하였다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker run --rm --name busybox busybox sleep 3600</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>host에서 sleep 3600 가 실행중인걸 알 수 있다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps aux | grep sleep</span></span><br><span class="line">root       16005  0.3  0.5 1326556 22572 pts/0   Sl+  05:20   0:00 docker run --<span class="built_in">rm</span> --name busybox busybox <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16067  0.0  0.0   3852   400 ?        Ss   05:20   0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16100  0.0  0.0   5968   668 pts/2    S+   05:20   0:00 grep --color=auto <span class="built_in">sleep</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>컨테이너 내부에서 pid1 은 cmd임을 알 수 있다.</li>
-<li>이는 시그널을 컨트롤하는 사용자 프로그램이 없다는 뜻이어서, kill을 제외한 다른 시그널에대한 핸들링이 없다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker exec busybox ps -ef</span></span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">    7 root      0:00 ps -ef</span><br><span class="line">    </span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 16067 # ignore </span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGINT 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGKILL 16067 # ignore</span></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGTERM 16067 # 컨테이너 종료</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<h3 id="docker-init-process"><a href="#docker-init-process" class="headerlink" title="docker init process"></a>docker init process</h3><ul>
-<li>–init : docker 에서 제공하는 컨테이너 init process</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment">#  docker run --rm --name busybox --init busybox sleep 3600</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>cmd 인 sleep 3600 부모로 &#x2F;sbin&#x2F;docker-init이 존재하는걸 알수 있다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># ps aux | grep sleep</span></span><br><span class="line">root       16182  0.2  0.5 1326812 22972 pts/0   Sl+  05:22   0:00 docker run --<span class="built_in">rm</span> --name busybox --init busybox <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16230  0.0  0.0    812     4 ?        Ss   05:22   0:00 /sbin/docker-init -- <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16265  0.0  0.0   3852   412 ?        S    05:22   0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">root       16267  0.0  0.0   5968   672 pts/2    S+   05:22   0:00 grep --color=auto <span class="built_in">sleep</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>컨테이너 내부의 ps역시 initprocess 자식으로 cmd가 존재한다.</li>
-<li>SIGHUP을 날렸을 때, docker-init 프로그램에서 시그널을 핸들링하여 컨테이너가 종료되는 걸 알 수 있다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:~<span class="comment"># docker exec busybox ps -ef</span></span><br><span class="line">PID   USER     TIME  COMMAND</span><br><span class="line">    1 root      0:00 /sbin/docker-init -- <span class="built_in">sleep</span> 3600</span><br><span class="line">    6 root      0:00 <span class="built_in">sleep</span> 3600</span><br><span class="line">    7 root      0:00 ps -ef</span><br><span class="line"></span><br><span class="line">root@seongtki:~<span class="comment"># kill -SIGHUP 16230</span></span><br></pre></td></tr></table></figure>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-07T23:40:35.000Z" title="2024. 12. 8. 오전 8:40:35">2024-12-08</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-08T12:32:57.298Z" title="2024. 12. 8. 오후 9:32:57">2024-12-08</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">9 minutes read (About 1362 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/08/docs/namespace/mount-namespace/">mount namespace</a></h1><div class="content"><h2 id="네임스페이스-namespace"><a href="#네임스페이스-namespace" class="headerlink" title="네임스페이스(namespace)"></a>네임스페이스(namespace)</h2><ul>
-<li>하나의 시스템에서 수행되지만, 각각 별개의 독립된 공간인 것처럼 <strong>격리된 환경을 제공</strong>하는 *<em>경량 프로세스 가상화 기술</em></li>
-<li>경량 프로세스는 부모 프로세스와 자원을 공유하는 프로세스를 의미</li>
-</ul>
-<h3 id="LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그"><a href="#LXC-LinuX-Container-의-네임스페이스는-6-종류와-플래그" class="headerlink" title="LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그"></a>LXC(LinuX Container)의 네임스페이스는 6 종류와 플래그</h3><ul>
-<li><p>마운트 네임스페이스 : CLONE_NEWNS</p>
-</li>
-<li><p>UTS 네임스페이스 : CLONE_NEWUTS</p>
-</li>
-<li><p>IPC 네임스페이스 : CLONE_NEWIPC</p>
-</li>
-<li><p>PID 네임스페이스 : CLONE_NEWPID</p>
-</li>
-<li><p>사용자 네임스페이스 : CLONE_NEWUSER</p>
-</li>
-<li><p>네트워크 네임스페이스 : CLONE_NEWNET</p>
-</li>
-<li><p>상수플래그 정의 (&#x2F;usr&#x2F;include&#x2F;linux&#x2F;sched.h)</p>
-</li>
-</ul>
-<p><img src="/blog/img/layer-12.png"></p>
-<h3 id="마운트-mount-네임스페이스란"><a href="#마운트-mount-네임스페이스란" class="headerlink" title="마운트(mount) 네임스페이스란?"></a>마운트(mount) 네임스페이스란?</h3><ul>
-<li>프로세스와 그 자식 프로세스가 각기 다른 파일시스템 마운트 지점을 제공</li>
-<li>기본적으로 모든 프로세스는 동일한 기본 네임스페이스를 공유하기 때문에, 파일 시스템을 마운트하거나 마운트를 해제하는 등의 변경을 모든 프로세스가 인지할 수 있음</li>
-<li>만약 clone() 시스템 콜을 통해 프로세스를 생성할 때 CLONE_NEWNS 플래그가 전달되면, 새로 생성되는 프로세스는 호출한 프로세스가 갖고있는 마운트 트리의 사본을 가져옴</li>
-<li>이 사본은 부모 프로세스에 영향을 미치지 않고 새로 생성된 프로세스가 파일시스템을 마운트 or 언마운트 등의 변경을 할 수 있도록 함</li>
-<li>이 시점부터 기본 네임스페이스의 모든 파일시스템 마운트 및 언마운트는 새로운 네임스페이스에서 볼 수 있지만, 각각의 프로세스 별 마운트 네임스페이스 내부에서의 변경을 해당 프로세스의 네임스페이스 밖에서는 알 수 없음</li>
-</ul>
-<p>마운트 네임스페이스는 “mount point”를 격리 한다.<br>여기서 mount란 루트파일시스템에 서브파일시스템을 부착하는 시스템콜이고, mount point는 파일시스템이 부착(mount) 될 위치(디렉터리)다.</p>
-<p>mount 하면 원래 디렉터리가 포함하고 있던 파일, 하위 디렉터리 등이 보이지 않고, 새로 부착된 파일시스템의 파일들이 보이게 됩니다. 예를 들어 USB 드라이브를 지정한 mount point로 부착을 시키면, 해당 위치에는 부착된 USB의 파일들이 보이게 됩니다. </p>
-<p>마운트 네임스페이스가 mount point를 격리한다는 것은 파일시스템 마운트와 해제 등의 변경사항들이 네임스페이스 밖에서는 보이지 않고, 외부에 전혀 영향을 주지 않음을 의미합니다. 마운트 네임스페이스가 생김으로써 컨테이너를 위해 pivot_root를 안전하게 실행할 수 있게 되었습니다.</p>
-<h3 id="unshare-mount-namespace"><a href="#unshare-mount-namespace" class="headerlink" title="unshare mount namespace"></a>unshare mount namespace</h3><h3 id="mount-플래그를-unshared-시스템-콜에-전달"><a href="#mount-플래그를-unshared-시스템-콜에-전달" class="headerlink" title="mount 플래그를 unshared 시스템 콜에 전달"></a>mount 플래그를 unshared 시스템 콜에 전달</h3><ul>
-<li>부모 프로세스의 mounts를 복제</li>
-<li>현재 bash 프로세스를 자체 마운트 네임스페이스로 이동</li>
-<li>“-m”옵션 -&gt; 마운트 네임스페이스</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">unshare -m</span><br><span class="line">root@seongtki:/tmp<span class="comment"># mkdir tmp1</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><p>root filesystem이 같기 때문에 양쪽다 폴더가 보임</p>
-</li>
-<li><p>mount는 namespace 내부에서만 적용되어 보인다.</p>
-</li>
-<li><p>tmp1 : mount point</p>
-</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount -o size=1m -t tmpfs tmpfs tmp1</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">tmpfs on /tmp/tmp1 <span class="built_in">type</span> tmpfs (rw,relatime,size=1024k)</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># readlink 심폴릭링크를 통해 namepsace id를 가져올 수 있다.</span></span><br><span class="line"><span class="comment"># /proc/$$ 는 현재 bash 쉘의 프로세스 ID(PID)</span></span><br><span class="line">$ <span class="built_in">readlink</span> /proc/$$/ns/mnt</span><br><span class="line">mnt:[4026532211]</span><br></pre></td></tr></table></figure>
-
-
-
-
-
-<ul>
-<li>host</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp<span class="comment"># mount | grep tmp1</span></span><br><span class="line">root@seongtki:/tmp<span class="comment">#</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>mount namespace는 per-process mount isolation을 제공 (프로세스에 격리된 파일시스템 마운트 제공)</li>
-</ul>
-<h3 id="per-process-mount-isolation"><a href="#per-process-mount-isolation" class="headerlink" title="per-process mount isolation"></a>per-process mount isolation</h3><ul>
-<li>new-root 에 nginx를 설치한다.</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">docker <span class="built_in">export</span> $(docker create nginx:latest) | tar -C new-root -xvf -</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">1 directory, 0 files</span><br><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># tree -L 1 new-root</span></span><br><span class="line">new-root</span><br><span class="line">├── bin -&gt; usr/bin</span><br><span class="line">├── boot</span><br><span class="line">├── dev</span><br><span class="line">├── docker-entrypoint.d</span><br><span class="line">├── docker-entrypoint.sh</span><br><span class="line">├── etc</span><br><span class="line">├── hello</span><br><span class="line">├── home</span><br><span class="line">├── lib -&gt; usr/lib</span><br><span class="line">├── media</span><br><span class="line">├── mnt</span><br><span class="line">├── opt</span><br><span class="line">├── proc</span><br><span class="line">├── root</span><br><span class="line">├── run</span><br><span class="line">├── sbin -&gt; usr/sbin</span><br><span class="line">├── srv</span><br><span class="line">├── sys</span><br><span class="line">├── tmp</span><br><span class="line">├── usr</span><br><span class="line">├── var</span><br><span class="line">└── world</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>mount</li>
-</ul>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># mount -t tmpfs none new-root</span></span><br></pre></td></tr></table></figure>
-
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">root@seongtki:/tmp/tmp1<span class="comment"># df -h | grep new</span></span><br><span class="line">none                               2.0G     0  2.0G   0% /tmp/tmp1/new-root</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="pivot-root-적용"><a href="#pivot-root-적용" class="headerlink" title="pivot_root 적용"></a>pivot_root 적용</h3><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">/<span class="comment"># mkdir old-root</span></span><br><span class="line">/<span class="comment"># pivot_root . old-root # 현재디렉토리를 루트파일시스템으로 하고, old-root 폴더에 기존 루트디렉토리를 마운트시킨다.</span></span><br><span class="line"></span><br><span class="line">/<span class="comment"># nginx -g &quot;daemon off;&quot; # nginx 실행</span></span><br></pre></td></tr></table></figure>
-
-
-
-<ul>
-<li>host에서 nginx pid를 이용해서 namespace id를 가져와 해당 파일시스템을 조회해본다.</li>
-<li>lsns: 현존하는 namespace를 확인하기 위해 사용하는 명령어</li>
-</ul>
-<p><img src="/blog/img/layer-13.png"></p>
-<ul>
-<li>자체적인 루트파일시스템이 보장되므로 서버 환경 (시스템 파일, 의존성 라이브러리 충돌, 경로 설정 등) 으로 부터 자유롭다.</li>
-<li>서버의 파일시스템으로 부터 완전하게 분리됨으로써 보안상 안전함</li>
-<li>컨테이너 내에서 자유롭게 마운트 변경이 가능하고 파일시스템을 확장할 수 있다.</li>
-</ul>
-</div></article></div><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2024-12-07T20:40:35.000Z" title="2024. 12. 8. 오전 5:40:35">2024-12-08</time></span><span class="level-item">Updated&nbsp;<time dateTime="2024-12-08T12:32:46.693Z" title="2024. 12. 8. 오후 9:32:46">2024-12-08</time></span><span class="level-item"><a class="link-muted" href="/blog/categories/container-namespace/">container/namespace</a></span><span class="level-item">7 minutes read (About 1072 words)</span></div></div><h1 class="title is-3 is-size-4-mobile"><a class="link-muted" href="/blog/2024/12/08/docs/namespace/bridge/">bridge</a></h1><div class="content"><h3 id="bridge"><a href="#bridge" class="headerlink" title="bridge?"></a>bridge?</h3><ul>
-<li>하나의 LAN 내부에서 단말이 많아질 경우 bridge를 사용하여 개선할 수 있다.</li>
-<li>단말기가 많아졌을 경우 발생하는 Collision Domain을 분리해 주는 역할을 한다.</li>
-<li>2계층 송수신을 처리한다.</li>
-</ul>
-<h3 id="Ethenet-Frame"><a href="#Ethenet-Frame" class="headerlink" title="Ethenet Frame"></a>Ethenet Frame</h3><ul>
-<li>OSI L2계층 (data link) 을 처리 한다.</li>
-<li>패킷 유입 &gt; 목적지 MAC 주소확인 &gt; 주소 테이블과 비교 &gt; 해당 디바이스가 연결된 포트로 패킷 전달.</li>
-</ul>
-<p><img src="/blog/img/bridge-01.png"></p>
-<h3 id="bridge-기능"><a href="#bridge-기능" class="headerlink" title="bridge 기능"></a>bridge 기능</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">Learning.</span><br><span class="line">출발지의 맥 어드레스를 배운다.</span><br><span class="line">브리지/스위치는 포트에 연결된 PC &quot;A&quot;가 통신을 위해 프레임을 내보내면</span><br><span class="line">그때 이 PC의 MAC 주소를 읽어서 자신의 bridge table에 저장한다.</span><br><span class="line">** bridge-table: 스위치나 브리지에 연결된 사용자들의 맥 주소를 저장하는 데이터베이스</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Flooding.</span><br><span class="line">들어온 포트를 제외한 나머지를 모든 포트로 데이터를 뿌린다.</span><br><span class="line">PC &quot;A&quot;가 통신하고자 하는 목적지 PC의 맥 주소가 브리지 테이블에 없으면</span><br><span class="line">모든 포트에 데이터를 전송한다. (브로드캐스트 라고 생각해도 됨. 브로드캐스트도 Flooding이 발생함)</span><br><span class="line"></span><br><span class="line">Forwarding</span><br><span class="line">Flooding과 반대로 목적지 PC의 맥 주소를 알고 그 목적지가 브릿지를 건너야 할때</span><br><span class="line">오직 그 해당 포트쪽으로만 데이터를 전송한다.</span><br><span class="line"> </span><br><span class="line">Filtering</span><br><span class="line">브릿지를 넘어가지 못하게 막는것.</span><br><span class="line">출발지와 목적지가 같은 세그먼트에 있을때 일어남.</span><br><span class="line">[세그먼트: 브릿지, 라우터, 허브 또는 스위치에 의해 묶어있는 네트워크의 한 부분]</span><br><span class="line">이 Filtering 기능 때문에 허브와 다르게 콜리젼 도메인을 나눌 수 있다.</span><br><span class="line"></span><br><span class="line">Aging</span><br><span class="line">브리지 테이블에 출발지의 MAC 주소가 들어오면 300초 동안 타이머를 설정한다.</span><br><span class="line">300초가 지나도록 다시 그 출발지 주소의 프레임이 들어오지 않으면 브리지 테이블에서 삭제한다.</span><br></pre></td></tr></table></figure>
-
-<p><img src="/blog/img/bridge-02.png"></p>
-<h2 id="Netfilter"><a href="#Netfilter" class="headerlink" title="Netfilter"></a>Netfilter</h2><p>커널 모듈로 <strong>네트워크 패킷을 처리</strong>하는 프레임워크이다.<br>네트워크 연산을 핸들러 형태로 처리할 수 있도록 hook 지점을 제공<br>패킷이 어떻게 <strong>전송될 지</strong>에 대한 결정 방법을 제공한다.</p>
-<p><img src="/blog/img/bridge-03.png"></p>
-<h3 id="Netfilter-항목"><a href="#Netfilter-항목" class="headerlink" title="Netfilter 항목"></a>Netfilter 항목</h3><table>
-<thead>
-<tr>
-<th>항목</th>
-<th>내용</th>
-<th>키워드</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>table</td>
-<td>용도별 rule 모음</td>
-<td>filter, nat, mangle</td>
-</tr>
-<tr>
-<td>chain</td>
-<td>패팃이 지나가는 hook 별로 존재</td>
-<td>PREROUTING, FORWARD, INPUT (netfilter의 hook에 매핑)</td>
-</tr>
-<tr>
-<td>rule</td>
-<td>table과 chain matrix에 대해서 정의함</td>
-<td>protocol type, dest&#x2F;src address ..</td>
-</tr>
-<tr>
-<td>action(target)</td>
-<td>패킷이 룰에 매칭되면 트리거 됨</td>
-<td>ACCEPT, DROP, REJECT</td>
-</tr>
-</tbody></table>
-<h3 id="red-gt-bridge-gt-blue-통신"><a href="#red-gt-bridge-gt-blue-통신" class="headerlink" title="red -&gt; bridge -&gt; blue 통신"></a>red -&gt; bridge -&gt; blue 통신</h3><ul>
-<li><p>bridge 관점에서 보자.</p>
-</li>
-<li><p>패킷은 netfilter에서 파놓은 여러 hook을 통과하는데 hook별로 iptables에 정의한 각 체인룰을 점검한다.</p>
-</li>
-<li><p>hook에 정의된 체인은 테이블 순서대로 등록된 룰을 체크하고 조건을 만족하면 action(target)을 트리거한다.</p>
-</li>
-<li><p>외부(src) -&gt; 외부(dst) 패킷이므로 FORWARD 체인의 filter 테이블 룰을 봐야 한다.</p>
-<ul>
-<li>FORWARD: NF_IP_FORWARD (hook) 에 등록된 체인</li>
-<li>NF_IP_FORWARD: incoming 패킷이 다른 호스트로 포워딩 되는 경우 트리거되는 netfilter hook</li>
-<li>filter(table): 패킷을 목적지로 전송여부를 결정</li>
-</ul>
-</li>
-<li><p><strong>rule 설정</strong></p>
-<ul>
-<li><p><strong>테이블 filter 에서 FORWARD 체인을 추가한다. 출발지가 1.1.1.0&#x2F;24 이면, ACCEPT 로 설정한다.</strong></p>
-</li>
-<li><pre><code class="sh">iptables -t filter -A FORWARD -s 1.1.1.0/24 -j ACCEPT
-</code></pre>
-</li>
-</ul>
-</li>
-</ul>
-<h3 id="iptalbes"><a href="#iptalbes" class="headerlink" title="iptalbes"></a>iptalbes</h3><ul>
-<li>netfilter가 파놓은 hook에 룰을 등록하고 관리하는 방법을 제공하는 툴</li>
-<li>netfilter에 내가 원하는 정책을 넣어야 하는데 그럴 때 사용하는 프로그램. 룰을 넣고 조회하는 역할을 한다.</li>
-</ul>
-<h3 id="정리"><a href="#정리" class="headerlink" title="정리"></a>정리</h3><p>A ns 에서 B ns 로 통신하기 위해 중간에 bridge 를 통과한다.<br>bridge 는 2계층 데이터 를 처리하는데, A, B 사이의 ARP 테이블을 채워주게 한다.<br>ping의 경우, ICMP를 이용해 송수신하는데 이 때 Netfilter 의 hook이 트리거 되어 ACCEPT 인 경우에만<br>송수신이 가능하다.<br>결국은 arp, bridge fdb 정보를 이용해서 통신하고 iptables rule에 따라 전송여부가 결정된다.</p>
-</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/blog/page/0/">Previous</a></div><div class="pagination-next"><a href="/blog/page/2/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/blog/">1</a></li><li><a class="pagination-link" href="/blog/page/2/">2</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/blog/page/5/">5</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">45</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">34</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-cilium/"><span class="level-start"><span class="level-item">cilium/cilium</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-communication/"><span class="level-start"><span class="level-item">cilium/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-install/"><span class="level-start"><span class="level-item">cilium/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gatewayapi/"><span class="level-start"><span class="level-item">gateway/gatewayapi</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gloo/"><span class="level-start"><span class="level-item">gateway/gloo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/ingress-ingress/"><span class="level-start"><span class="level-item">ingress/ingress</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-bookinfo/"><span class="level-start"><span class="level-item">istio/bookinfo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-envoy/"><span class="level-start"><span class="level-item">istio/envoy</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-outline/"><span class="level-start"><span class="level-item">istio/istio-outline</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-test/"><span class="level-start"><span class="level-item">istio/istio-test</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-traffic/"><span class="level-start"><span class="level-item">istio/istio-traffic</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-Enumeration/"><span class="level-start"><span class="level-item">java/Enumeration</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-flyweight/"><span class="level-start"><span class="level-item">java/flyweight</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-interface/"><span class="level-start"><span class="level-item">java/interface</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs-install/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB-install/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-clusterip/"><span class="level-start"><span class="level-item">serivce/clusterip</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-install/"><span class="level-start"><span class="level-item">serivce/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-nodeport/"><span class="level-start"><span class="level-item">serivce/nodeport</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni/"><span class="level-start"><span class="level-item">vpccni/vpccni</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni-install/"><span class="level-start"><span class="level-item">vpccni/vpccni-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni2/"><span class="level-start"><span class="level-item">vpccni/vpccni2</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-22T08:30:35.000Z">2024-12-22</time></p><p class="title"><a href="/blog/2024/12/22/docs/loadbalancer/metallb/">MetalLB</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-metalLB/">loadbaleancer/metalLB</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-22T07:30:35.000Z">2024-12-22</time></p><p class="title"><a href="/blog/2024/12/22/docs/loadbalancer/ipvs-proxy/">ipvs-proxy</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-ipvs/">loadbaleancer/ipvs</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-22T01:30:35.000Z">2024-12-22</time></p><p class="title"><a href="/blog/2024/12/22/docs/loadbalancer/ipvs-install/">ipvs-install</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-ipvs-install/">loadbaleancer/ipvs-install</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-15T09:30:35.000Z">2024-12-15</time></p><p class="title"><a href="/blog/2024/12/15/docs/istio/bookinfo/">bookinfo</a></p><p class="categories"><a href="/blog/categories/istio-bookinfo/">istio/bookinfo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-15T06:30:35.000Z">2024-12-15</time></p><p class="title"><a href="/blog/2024/12/15/docs/istio/envoy/">envoy</a></p><p class="categories"><a href="/blog/categories/istio-envoy/">istio/envoy</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+</div></article></div><nav class="pagination" role="navigation" aria-label="pagination"><div class="pagination-previous is-invisible is-hidden-mobile"><a href="/blog/page/0/">Previous</a></div><div class="pagination-next"><a href="/blog/page/2/">Next</a></div><ul class="pagination-list is-hidden-mobile"><li><a class="pagination-link is-current" href="/blog/">1</a></li><li><a class="pagination-link" href="/blog/page/2/">2</a></li><li><span class="pagination-ellipsis">&hellip;</span></li><li><a class="pagination-link" href="/blog/page/5/">5</a></li></ul></nav></div><div class="column column-left is-4-tablet is-4-desktop is-4-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/blog/img/avatar.png" alt="Seongtaek Kim"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Seongtaek Kim</p><p class="is-size-6 is-block">Blog</p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/blog/archives"><p class="title">45</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/blog/categories"><p class="title">34</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/blog/tags"><p class="title">0</p></a></div></div></nav><div class="level is-mobile is-multiline"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/seongtaekkim"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Linkedin" href="https://linkedin.com/in/staek"><i class="fab fa-linkedin"></i></a></div></div></div><!--!--><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/blog/categories/calico-communication/"><span class="level-start"><span class="level-item">calico/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-concept/"><span class="level-start"><span class="level-item">calico/concept</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/calico-networkmode/"><span class="level-start"><span class="level-item">calico/networkmode</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-cilium/"><span class="level-start"><span class="level-item">cilium/cilium</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-communication/"><span class="level-start"><span class="level-item">cilium/communication</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/cilium-install/"><span class="level-start"><span class="level-item">cilium/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-cgroup/"><span class="level-start"><span class="level-item">container/cgroup</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-namespace/"><span class="level-start"><span class="level-item">container/namespace</span></span><span class="level-end"><span class="level-item tag">9</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlayFS/"><span class="level-start"><span class="level-item">container/overlayFS</span></span><span class="level-end"><span class="level-item tag">3</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/container-overlaynetwork/"><span class="level-start"><span class="level-item">container/overlaynetwork</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gatewayapi/"><span class="level-start"><span class="level-item">gateway/gatewayapi</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/gateway-gloo/"><span class="level-start"><span class="level-item">gateway/gloo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/ingress-ingress/"><span class="level-start"><span class="level-item">ingress/ingress</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-bookinfo/"><span class="level-start"><span class="level-item">istio/bookinfo</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-envoy/"><span class="level-start"><span class="level-item">istio/envoy</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-outline/"><span class="level-start"><span class="level-item">istio/istio-outline</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-test/"><span class="level-start"><span class="level-item">istio/istio-test</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/istio-istio-traffic/"><span class="level-start"><span class="level-item">istio/istio-traffic</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-Enumeration/"><span class="level-start"><span class="level-item">java/Enumeration</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-flyweight/"><span class="level-start"><span class="level-item">java/flyweight</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/java-interface/"><span class="level-start"><span class="level-item">java/interface</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-PAUSE-Container/"><span class="level-start"><span class="level-item">k8s/PAUSE-Container</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-flannel/"><span class="level-start"><span class="level-item">k8s/flannel</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/k8s-kind/"><span class="level-start"><span class="level-item">k8s/kind</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-ipvs-install/"><span class="level-start"><span class="level-item">loadbaleancer/ipvs-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/loadbaleancer-metalLB-install/"><span class="level-start"><span class="level-item">loadbaleancer/metalLB-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-clusterip/"><span class="level-start"><span class="level-item">serivce/clusterip</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-install/"><span class="level-start"><span class="level-item">serivce/install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/serivce-nodeport/"><span class="level-start"><span class="level-item">serivce/nodeport</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni/"><span class="level-start"><span class="level-item">vpccni/vpccni</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni-install/"><span class="level-start"><span class="level-item">vpccni/vpccni-install</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li><li><a class="level is-mobile" href="/blog/categories/vpccni-vpccni2/"><span class="level-start"><span class="level-item">vpccni/vpccni2</span></span><span class="level-end"><span class="level-item tag">1</span></span></a></li></ul></div></div></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-29T07:20:30.000Z">2024-12-29</time></p><p class="title"><a href="/blog/2024/12/29/docs/overlayFS/container-layer-stack/">Container Layer Stack</a></p><p class="categories"><a href="/blog/categories/container-overlayFS/">container/overlayFS</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-29T03:20:30.000Z">2024-12-29</time></p><p class="title"><a href="/blog/2024/12/29/docs/overlayFS/container-layer/">container layer</a></p><p class="categories"><a href="/blog/categories/container-overlayFS/">container/overlayFS</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-29T01:20:30.000Z">2024-12-29</time></p><p class="title"><a href="/blog/2024/12/29/docs/overlayFS/overlayFS/">Overlay Filesystem</a></p><p class="categories"><a href="/blog/categories/container-overlayFS/">container/overlayFS</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-22T08:30:35.000Z">2024-12-22</time></p><p class="title"><a href="/blog/2024/12/22/docs/loadbalancer/metallb/">MetalLB</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-metalLB/">loadbaleancer/metalLB</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2024-12-22T07:30:35.000Z">2024-12-22</time></p><p class="title"><a href="/blog/2024/12/22/docs/loadbalancer/ipvs-proxy/">ipvs-proxy</a></p><p class="categories"><a href="/blog/categories/loadbaleancer-ipvs/">loadbaleancer/ipvs</a></p></div></article></div></div><!--!--></div><!--!--></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/blog/">Blog</a><p class="is-size-7"><span>&copy; 2024 Seongtaek Kim</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" defer></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
             article: {
                 highlight: {
                     clipboard: true,
